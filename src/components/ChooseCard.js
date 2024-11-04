@@ -1,6 +1,6 @@
 import React from 'react';
 
-function ChooseCard({ images, onClose }) {
+function ChooseCard({ images, onSelect, onClose }) {
   const styles = {
     overlay: {
       position: 'fixed',
@@ -19,7 +19,6 @@ function ChooseCard({ images, onClose }) {
       borderRadius: '8px',
       position: 'relative',
       maxHeight: '80vh',
-      maxWidth: '90vw',
       overflowY: 'auto',
     },
     closeButton: {
@@ -58,7 +57,7 @@ function ChooseCard({ images, onClose }) {
               src={image}
               alt={`card-${index}`}
               style={styles.image}
-              onClick={() => console.log(`Selected card ${index + 1}`)}
+              onClick={() => onSelect(image)}
             />
           ))}
         </div>

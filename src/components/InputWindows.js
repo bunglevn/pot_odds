@@ -65,7 +65,7 @@ function InputWindows() {
 
     return (
         <Box style={WindowStyle}>
-            <div style={TitleStyle}>Title</div>
+            <div style={TitleStyle}>Pots</div>
             <PrettoSlider
                 valueLabelDisplay="auto"
                 aria-label="pretto slider"

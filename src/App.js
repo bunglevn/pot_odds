@@ -5,12 +5,15 @@ import InputWindows from './components/InputWindows';
 import { useState } from 'react';
 
 const importAll = (r) => r.keys().map(r);
-const cardImages = importAll(require.context('./images/PNG-cards-1.3', false, /\.(png|jpe?g|svg)$/));
+const allCardImages = importAll(require.context('./images/PNG-cards-1.3', false, /\.(png|jpe?g|svg)$/));
 
 function App() {
   const [isPopupVisible, setIsPopupVisible] = useState(false);
+  const [cardImages, setCardImages] = useState([null, null, null, null, null, null, null]);
+  const [selectedCardIndex, setSelectedCardIndex] = useState(null);
 
-  const handleCardClick = () => {
+  const handleCardClick = (index) => {
+    setSelectedCardIndex(index);
     setIsPopupVisible(true);
   };
 
@@ -18,28 +21,41 @@ function App() {
     setIsPopupVisible(false);
   };
 
+  const chooseCardImage = (image) => {
+    setCardImages((prevImages) => {
+      const newImages = [...prevImages];
+      newImages[selectedCardIndex] = image;
+      return newImages;
+    });
+    closePopup();
+  };
+
   return (
     <div className="App">
       <div className="card-container">
-        <Card image={cardImages[0]} onCardClick={handleCardClick} />
-        <Card image={cardImages[1]} onCardClick={handleCardClick} />
-        <Card image={cardImages[2]} onCardClick={handleCardClick} />
-        <Card image={cardImages[3]} onCardClick={handleCardClick} />
-        <Card image={cardImages[4]} onCardClick={handleCardClick} />
+        {cardImages.slice(0, 5).map((image, index) => (
+          <Card
+            key={index}
+            image={image}
+            onCardClick={() => handleCardClick(index)}
+          />
+        ))}
       </div>
       <div className="card-container" style={{ position: 'absolute', top: '470px' }}>
-        <Card onCardClick={handleCardClick} />
-        <Card onCardClick={handleCardClick} />
+        {cardImages.slice(5).map((image, index) => (
+          <Card
+            key={index + 5}
+            image={image}
+            onCardClick={() => handleCardClick(index + 5)}
+          />
+        ))}
       </div>
-      <div style={{ position: 'absolute', left: '220px' }}>
+      <div style={{ position: 'absolute', left: '15%' }}>
         <InputWindows />
       </div>
 
       {isPopupVisible && (
-        <ChooseCard images={cardImages} onClose={closePopup}>
-          <h2>Choose Card</h2>
-
-        </ChooseCard>
+        <ChooseCard images={allCardImages} onSelect={chooseCardImage} onClose={closePopup} />
       )}
     </div>
   );

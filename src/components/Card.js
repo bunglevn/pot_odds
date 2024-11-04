@@ -8,7 +8,7 @@ function Card({ image, onCardClick }) {
     height: '150px',
     minHeight: '130px',
     backgroundColor: '#808080',
-    borderRadius: '8px',
+    borderRadius: '5px',
     boxShadow: isHovered ? '0px 8px 12px rgba(0, 0, 0, 0.3)' : '0px 4px 8px rgba(0, 0, 0, 0.2)',
     opacity: isHovered ? 1 : 0.8,
     transform: isHovered ? 'scale(1.05)' : 'scale(1)',
