@@ -1,22 +1,20 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import {Slider, Input} from "@mui/material/";
-import { styled } from "@mui/material/styles";
-import { useState } from "react";
 import Chip from '../images/chip.png'
 
 function InputWindows({ title, sliderValue, handleSliderChange }) {
-  const handleInputChange = (event) => {
-    setSliderValue(event.target.value === '' ? 0 : Number(event.target.value));
-  };
-
-  const handleBlur = () => {
-    if (sliderValue < 0) {
-      setSliderValue(0);
-    } else if (sliderValue > 100) {
-      setSliderValue(100);
-    }
-  };
+  // const handleInputChange = (event) => {
+  //     handleSliderChange(event.target.value === '' ? 0 : Number(event.target.value));
+  // };
+  //
+  // const handleBlur = () => {
+  //   if (sliderValue < 0) {
+  //       handleSliderChange(_,0);
+  //   } else if (sliderValue > 100) {
+  //       handleSliderChange(_,100);
+  //   }
+  // };
 
   const WindowStyle = {
     width: "200px",
@@ -66,8 +64,8 @@ function InputWindows({ title, sliderValue, handleSliderChange }) {
         <Input
             value={sliderValue}
             size="small"
-            onChange={handleInputChange}
-            onBlur={handleBlur}
+            // onChange={handleInputChange}
+            // onBlur={handleBlur}
             sx={{
               fontColor: "#fff", // Set background color to white
               color: "#fff", // Set font color
@@ -83,7 +81,6 @@ function InputWindows({ title, sliderValue, handleSliderChange }) {
             }}
         />
       </div>
-      {/* Display the current value */}
     </Box>
   );
 }

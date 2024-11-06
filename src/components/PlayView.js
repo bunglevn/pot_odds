@@ -101,18 +101,6 @@ export function PlayView({getPotOdds}) {
 
       <div style={{ position: "absolute", right: "5vw" }}>
         <Stack direction="column" spacing={2} alignItems="flex-end">
-          {/*<TextField*/}
-          {/*    id="filled-basic"*/}
-          {/*    label="Opponent's Raise"*/}
-          {/*    variant="filled"*/}
-          {/*    sx={{ width: '180px' }}*/}
-          {/*    InputProps={{*/}
-          {/*        style: { fontSize: '1rem' }*/}
-          {/*    }}*/}
-          {/*    InputLabelProps={{*/}
-          {/*        style: {fontSize: '1.1rem'}*/}
-          {/*    }}*/}
-          {/*/>*/}
           <InputWindows
             title={"Opponent's Call Value"}
             sliderValue={opponentCall}
