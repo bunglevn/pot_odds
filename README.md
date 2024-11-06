@@ -2,6 +2,23 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Features/Outputs:
+- Equity
+- Pot odds
+- => Call/fold
+- Expected value when Call/Fold
+
+## Input:
+- Current hand
+- River
+- Pot value
+- Opponent's call
+
+## Flow:
+- User choose inputs (have default options)
+- Show summarize table on main screen
+- Click View all to see math
+
 ## Available Scripts
 
 In the project directory, you can run:
