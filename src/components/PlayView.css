@@ -1,1 +1,22 @@
+.PlayView {
+    text-align: center;
+    background-image: url('../images/pokertable.jpg');
+    background-size: contain;
+    background-position: center;
+    min-height: 100vh;
+    background-repeat: no-repeat;
+    background-color: #938874;
+    display: flex;
+    flex-direction: column; /* Stacks main elements vertically */
+    align-items: center;
+    justify-content: center;
+}
 
+.card-container {
+    display: flex;
+    flex-direction: row; /* Ensures cards are aligned in a row */
+    gap: 10px;
+    justify-content: center;
+    margin-top: 20px;
+    max-width: 800px; /* Optional: Limits the width to control alignment */
+}
