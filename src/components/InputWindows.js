@@ -1,14 +1,26 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
-import Slider from "@mui/material/Slider";
+import {Slider, Input} from "@mui/material/";
 import { styled } from "@mui/material/styles";
 import { useState } from "react";
+import Chip from '../images/chip.png'
 
 function InputWindows({ title }) {
   const [sliderValue, setSliderValue] = useState(20);
 
   const handleSliderChange = (event, newValue) => {
     setSliderValue(newValue);
+  };
+  const handleInputChange = (event) => {
+    setSliderValue(event.target.value === '' ? 0 : Number(event.target.value));
+  };
+
+  const handleBlur = () => {
+    if (sliderValue < 0) {
+      setSliderValue(0);
+    } else if (sliderValue > 100) {
+      setSliderValue(100);
+    }
   };
 
   const WindowStyle = {
@@ -33,21 +45,18 @@ function InputWindows({ title }) {
   const PrettoSlider = styled(Slider)(({ theme }) => ({
     color: "#52af77",
     height: 14,
-    width: "100%", // Full width of the parent container
+    width: "90%", // Full width of the parent container
     "& .MuiSlider-track": {
       border: "none",
     },
     "& .MuiSlider-thumb": {
-      height: 24,
-      width: 24,
-      backgroundColor: "#fff",
-      border: "2px solid currentColor",
-      "&:focus, &:hover, &.Mui-active, &.Mui-focusVisible": {
-        boxShadow: "inherit",
-      },
-      "&::before": {
-        display: "none",
-      },
+      height: 30,
+      width: 30,
+      backgroundImage: `url(${Chip})`,
+      backgroundSize: 'cover',
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: 'center',
+      border: 'none'
     },
     "& .MuiSlider-valueLabel": {
       lineHeight: 1.2,
@@ -78,8 +87,30 @@ function InputWindows({ title }) {
         onChange={handleSliderChange}
         valueLabelDisplay="auto"
         aria-label="pretto slider"
+        max={1000}
       />
-      <div style={TitleStyle}>Value: {sliderValue}</div>{" "}
+      <div style={TitleStyle}>Value:
+        <Input
+            value={sliderValue}
+            size="small"
+            onChange={handleInputChange}
+            onBlur={handleBlur}
+            sx={{
+              fontColor: "#fff", // Set background color to white
+              color: "#fff", // Set font color
+              width: "50px",
+            }}
+            color="warning"
+            fontColor="#123456"
+            inputProps={{
+              step: 5,
+              min: 0,
+              max: 1000,
+              type: 'number',
+              'aria-labelledby': 'input-slider',
+            }}
+        />
+      </div>
       {/* Display the current value */}
     </Box>
   );
