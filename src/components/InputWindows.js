@@ -42,52 +42,30 @@ function InputWindows({ title }) {
     fontFamily: '"Arial", sans-serif',
   };
 
-  const PrettoSlider = styled(Slider)(({ theme }) => ({
-    color: "#52af77",
-    height: 14,
-    width: "90%", // Full width of the parent container
-    "& .MuiSlider-track": {
-      border: "none",
-    },
-    "& .MuiSlider-thumb": {
-      height: 30,
-      width: 30,
-      backgroundImage: `url(${Chip})`,
-      backgroundSize: 'cover',
-      backgroundRepeat: 'no-repeat',
-      backgroundPosition: 'center',
-      border: 'none'
-    },
-    "& .MuiSlider-valueLabel": {
-      lineHeight: 1.2,
-      fontSize: 12,
-      background: "unset",
-      padding: 0,
-      width: 32,
-      height: 32,
-      borderRadius: "50% 50% 50% 0",
-      backgroundColor: "#52af77",
-      transformOrigin: "bottom left",
-      transform: "translate(50%, -100%) rotate(-45deg) scale(0)",
-      "&::before": { display: "none" },
-      "&.MuiSlider-valueLabelOpen": {
-        transform: "translate(50%, -100%) rotate(-45deg) scale(1)",
-      },
-      "& > *": {
-        transform: "rotate(45deg)",
-      },
-    },
-  }));
-
   return (
     <Box style={WindowStyle}>
       <div style={TitleStyle}> {title}</div>
-      <PrettoSlider
+      <Slider
         value={sliderValue}
         onChange={handleSliderChange}
         valueLabelDisplay="auto"
         aria-label="pretto slider"
         max={1000}
+        sx={{
+          fontColor: "#fff",
+          color: "#00bfa5",
+          width: "180px",
+          height: "10px",
+          '& .MuiSlider-thumb': {
+            width: 25, // Set thumb width
+            height: 25, // Set thumb height
+            backgroundImage: `url(${Chip})`,
+            backgroundSize: 'cover', // Ensure the image covers the thumb fully
+            backgroundRepeat: 'no-repeat', // Prevent the image from repeating
+            borderRadius: '50%', // Optional, if you want a circular thumb
+            border: '2px solid #fff', // Add a border to the thumb
+          },
+        }}
       />
       <div style={TitleStyle}>Value:
         <Input
@@ -100,8 +78,7 @@ function InputWindows({ title }) {
               color: "#fff", // Set font color
               width: "50px",
             }}
-            color="warning"
-            fontColor="#123456"
+            color="success"
             inputProps={{
               step: 5,
               min: 0,
