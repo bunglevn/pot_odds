@@ -10,8 +10,8 @@ const avatar_size = 90;
 function PlayView() {
   const [isPopupVisible, setIsPopupVisible] = useState(false);
 
-  const [river, setRiver] = useState([null, null, null, null, null]);
-  const [hole, setHole] = useState([null, null]);
+    const [river, setRiver] = useState(["", "", "", "", ""]);
+    const [hole, setHole] = useState(["", ""]);
 
   const [selectedCard, setSelectedCard] = useState("");
 
