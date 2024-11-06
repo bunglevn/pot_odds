@@ -1,5 +1,6 @@
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
+import { Typography } from "@mui/material";
 
 const Item = styled(Paper)(({ theme }) => ({
   height: "97.5vh",
@@ -13,11 +14,13 @@ const Item = styled(Paper)(({ theme }) => ({
   }),
 }));
 
-function SummaryTable() {
+function SummaryTable({potOdds}) {
   return (
     <div>
       <Item>
         <h1>Summary Table</h1>
+        <Typography> Pot odds </Typography>
+        <Typography> {potOdds} </Typography>
       </Item>
     </div>
   );

@@ -12,21 +12,21 @@ enum PokerHandType {
 }
 
 export const NumberShortCutMap: Record<string, string> = {
-  ["king"] : "K",
-  ["jack"] : "J",
-  ["ace"] : "A",
-  ["queen"] : "Q"
-}
+  ["king"]: "K",
+  ["jack"]: "J",
+  ["ace"]: "A",
+  ["queen"]: "Q",
+};
 
-export const CategoryShortCutMap: Record<string, string> = {
-  ["hearts"] : "H",
-  ["hearts2"] : "H",
-  ["spades"] : "S",
-  ["spades2"] : "S",
-  ["clubs"] : "C",
-  ["clubs2"] : "C",
-  ["diamonds"]  : "D",
-  ["diamonds2"] : "D"
-}
+export const SuitShortCutMap: Record<string, string> = {
+  ["hearts"]: "H",
+  ["hearts2"]: "H",
+  ["spades"]: "S",
+  ["spades2"]: "S",
+  ["clubs"]: "C",
+  ["clubs2"]: "C",
+  ["diamonds"]: "D",
+  ["diamonds2"]: "D",
+};
 
 export default PokerHandType;

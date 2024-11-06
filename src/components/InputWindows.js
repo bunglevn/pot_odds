@@ -5,12 +5,7 @@ import { styled } from "@mui/material/styles";
 import { useState } from "react";
 import Chip from '../images/chip.png'
 
-function InputWindows({ title }) {
-  const [sliderValue, setSliderValue] = useState(20);
-
-  const handleSliderChange = (event, newValue) => {
-    setSliderValue(newValue);
-  };
+function InputWindows({ title, sliderValue, handleSliderChange }) {
   const handleInputChange = (event) => {
     setSliderValue(event.target.value === '' ? 0 : Number(event.target.value));
   };
