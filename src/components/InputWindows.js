@@ -2,8 +2,15 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
 import { styled } from '@mui/material/styles';
+import { useState } from 'react';
 
 function InputWindows() {
+    const [sliderValue, setSliderValue] = useState(20);
+
+    const handleSliderChange = (event, newValue) => {
+        setSliderValue(newValue);
+    };
+
     const WindowStyle = {
         width: '200px',
         height: '100px',
@@ -65,12 +72,14 @@ function InputWindows() {
 
     return (
         <Box style={WindowStyle}>
-            <div style={TitleStyle}>Title</div>
+            <div style={TitleStyle}>Pots</div>
             <PrettoSlider
+                value={sliderValue}
+                onChange={handleSliderChange}
                 valueLabelDisplay="auto"
                 aria-label="pretto slider"
-                defaultValue={20}
             />
+            <div style={TitleStyle}>Value: {sliderValue}</div> {/* Display the current value */}
         </Box>
     );
 }
