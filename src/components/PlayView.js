@@ -9,7 +9,7 @@ import { calculateEquity } from "../logic/equity.ts";
 import { calculatePotOdds, shouldCall } from "../logic/pot-odds.ts";
 
 const avatar_size = 90;
-export function PlayView({getPotOdds}) {
+export function PlayView({ getPotOdds }) {
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [potValue, setPotValue] = useState(20);
   const [opponentCall, setOpponentCall] = useState(20);
@@ -22,7 +22,7 @@ export function PlayView({getPotOdds}) {
   useEffect(() => {
     // Calculate values
     const potOdds = calculatePotOdds({ potValue, opponentCall });
-    getPotOdds(potOdds)
+    getPotOdds(potOdds);
     const equity = calculateEquity({ hole, river });
     const decision = shouldCall(equity, potOdds);
   }, [hole, river, potValue, opponentCall]);

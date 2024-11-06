@@ -14,7 +14,7 @@ const Item = styled(Paper)(({ theme }) => ({
   }),
 }));
 
-function SummaryTable({potOdds}) {
+function SummaryTable({ potOdds }) {
   return (
     <div>
       <Item>

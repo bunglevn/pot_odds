@@ -1,7 +1,7 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
-import {Slider, Input} from "@mui/material/";
-import Chip from '../images/chip.png'
+import { Slider, Input } from "@mui/material/";
+import Chip from "../images/chip.png";
 
 function InputWindows({ title, sliderValue, handleSliderChange }) {
   // const handleInputChange = (event) => {
@@ -49,36 +49,37 @@ function InputWindows({ title, sliderValue, handleSliderChange }) {
           color: "#00bfa5",
           width: "180px",
           height: "10px",
-          '& .MuiSlider-thumb': {
+          "& .MuiSlider-thumb": {
             width: 25, // Set thumb width
             height: 25, // Set thumb height
             backgroundImage: `url(${Chip})`,
-            backgroundSize: 'cover', // Ensure the image covers the thumb fully
-            backgroundRepeat: 'no-repeat', // Prevent the image from repeating
-            borderRadius: '50%', // Optional, if you want a circular thumb
-            border: '2px solid #fff', // Add a border to the thumb
+            backgroundSize: "cover", // Ensure the image covers the thumb fully
+            backgroundRepeat: "no-repeat", // Prevent the image from repeating
+            borderRadius: "50%", // Optional, if you want a circular thumb
+            border: "2px solid #fff", // Add a border to the thumb
           },
         }}
       />
-      <div style={TitleStyle}>Value:
+      <div style={TitleStyle}>
+        Value:
         <Input
-            value={sliderValue}
-            size="small"
-            // onChange={handleInputChange}
-            // onBlur={handleBlur}
-            sx={{
-              fontColor: "#fff", // Set background color to white
-              color: "#fff", // Set font color
-              width: "50px",
-            }}
-            color="success"
-            inputProps={{
-              step: 5,
-              min: 0,
-              max: 1000,
-              type: 'number',
-              'aria-labelledby': 'input-slider',
-            }}
+          value={sliderValue}
+          size="small"
+          // onChange={handleInputChange}
+          // onBlur={handleBlur}
+          sx={{
+            fontColor: "#fff", // Set background color to white
+            color: "#fff", // Set font color
+            width: "50px",
+          }}
+          color="success"
+          inputProps={{
+            step: 5,
+            min: 0,
+            max: 1000,
+            type: "number",
+            "aria-labelledby": "input-slider",
+          }}
         />
       </div>
     </Box>
