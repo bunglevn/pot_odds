@@ -14,13 +14,19 @@ const Item = styled(Paper)(({ theme }) => ({
   }),
 }));
 
-function SummaryTable({ potOdds }) {
+function SummaryTable({ potOdds , equity, decision}) {
   return (
     <div>
       <Item>
         <h1>Summary Table</h1>
         <Typography> Pot odds </Typography>
         <Typography> {potOdds} </Typography>
+
+        <Typography> Equity </Typography>
+        <Typography> {equity} </Typography>
+
+        <Typography> Decision </Typography>
+        <Typography> {decision} </Typography>
       </Item>
     </div>
   );

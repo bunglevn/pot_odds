@@ -8,8 +8,8 @@ import { Stack, Avatar } from "@mui/material";
 import { calculateEquity } from "../logic/equity.ts";
 import { calculatePotOdds, shouldCall } from "../logic/pot-odds.ts";
 
-const avatar_size = 90;
-export function PlayView({ getPotOdds }) {
+const avatar_size = 110;
+export function PlayView({ getPotOdds, getEquity, getDecision}) {
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [potValue, setPotValue] = useState(20);
   const [opponentCall, setOpponentCall] = useState(20);
@@ -24,7 +24,9 @@ export function PlayView({ getPotOdds }) {
     const potOdds = calculatePotOdds({ potValue, opponentCall });
     getPotOdds(potOdds);
     const equity = calculateEquity({ hole, river });
+    getEquity(equity)
     const decision = shouldCall(equity, potOdds);
+    getDecision(decision)
   }, [hole, river, potValue, opponentCall]);
 
   const chooseCardImage = (image, key) => {

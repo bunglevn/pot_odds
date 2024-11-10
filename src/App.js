@@ -7,22 +7,27 @@ import { useState } from "react";
 
 function App() {
   const [potOdds, setPotOdds] = useState(0);
-  return (
-    <div style={{ backgroundColor: "#000000" }}>
-      <Box sx={{ flexGrow: 1 }}>
-        <Grid container spacing={1}>
-          {/* Left side with SummaryTable, taking up 3 out of 12 columns */}
-          <Grid size={2.5}>
-            <SummaryTable potOdds={potOdds} />
-          </Grid>
+  const [equity, setEquity] = useState(0);
+  const [decision, setDecision] = useState();
 
-          {/* Right side with PlayView, taking up the remaining 9 out of 12 columns */}
-          <Grid size={9.5}>
-            <PlayView getPotOdds={(value) => setPotOdds(value)} />
+  return (
+      <div style={{ backgroundColor: "#000000" }}>
+        <Box sx={{ flexGrow: 1 }}>
+          <Grid container spacing={1}>
+            {/* Left side with SummaryTable, taking up 3 out of 12 columns */}
+            <Grid size={2.5}>
+              <SummaryTable potOdds={potOdds} equity={equity} />
+            </Grid>
+
+            {/* Right side with PlayView, taking up the remaining 9 out of 12 columns */}
+            <Grid size={9.5}>
+              <PlayView getPotOdds={(value) => setPotOdds(value)}
+                        getEquity={(value) => setEquity(value)}
+                        getDecision={(value) => setDecision(value)}/>
+            </Grid>
           </Grid>
-        </Grid>
-      </Box>
-    </div>
+        </Box>
+      </div>
   );
 }
 
