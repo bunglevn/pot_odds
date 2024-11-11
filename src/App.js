@@ -16,7 +16,7 @@ function App() {
           <Grid container spacing={1}>
             {/* Left side with SummaryTable, taking up 3 out of 12 columns */}
             <Grid size={2.5}>
-              <SummaryTable potOdds={potOdds} equity={equity} />
+              <SummaryTable potOdds={potOdds} equity={equity} decision={decision}/>
             </Grid>
 
             {/* Right side with PlayView, taking up the remaining 9 out of 12 columns */}
