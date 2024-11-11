@@ -8,7 +8,7 @@ import { useState } from "react";
 function App() {
   const [potOdds, setPotOdds] = useState(0);
   const [equity, setEquity] = useState(0);
-  const [decision, setDecision] = useState();
+  const [decision, setDecision] = useState(false);
 
   return (
     <div style={{ backgroundColor: "#000000" }}>
