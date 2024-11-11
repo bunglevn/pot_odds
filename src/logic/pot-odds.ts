@@ -5,7 +5,7 @@ export function calculatePotOdds({
   potValue: number;
   opponentCall: number;
 }) {
-  return (opponentCall * 100) / potValue;
+  return (opponentCall * 100) / (opponentCall + potValue);
 }
 
 export function shouldCall(equity: number, potOdds: number) {
