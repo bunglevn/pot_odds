@@ -1,14 +1,13 @@
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
 import { Typography } from "@mui/material";
-import Card from '@mui/material/Card';
-import Box from '@mui/material/Box';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
+import Card from "@mui/material/Card";
+import Box from "@mui/material/Box";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
 import summaryTableImg from "../images/summaryTable.png";
-import Stack from '@mui/material/Stack';
-import CircularProgress from '@mui/material/CircularProgress';
-
+import Stack from "@mui/material/Stack";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const Item = styled(Paper)(({ theme }) => ({
   height: "97.5vh",
@@ -22,23 +21,23 @@ const Item = styled(Paper)(({ theme }) => ({
   }),
 }));
 
-function SummaryTable({ potOdds , equity, decision}) {
+function SummaryTable({ potOdds, equity, decision }) {
   return (
     <div>
       <Item>
         <Card sx={{ maxWidth: 345 }}>
           <CardMedia
-              sx={{ height: 100 }}
-              image={summaryTableImg}
-              title="Cover"
+            sx={{ height: 100 }}
+            image={summaryTableImg}
+            title="Cover"
           />
           <CardContent>
             <Typography
-                gutterBottom
-                variant="h5"
-                component="h1"
-                align="center"
-                fontWeight="bold"
+              gutterBottom
+              variant="h5"
+              component="h1"
+              align="center"
+              fontWeight="bold"
             >
               Summary Table
             </Typography>
@@ -47,24 +46,24 @@ function SummaryTable({ potOdds , equity, decision}) {
 
         <Typography> Pot odds </Typography>
 
-        <Box sx={{ position: 'relative', display: 'inline-flex' }}>
-          <CircularProgress variant="determinate" value={potOdds}  />
+        <Box sx={{ position: "relative", display: "inline-flex" }}>
+          <CircularProgress variant="determinate" value={potOdds} />
           <Box
-              sx={{
-                top: 0,
-                left: 0,
-                bottom: 0,
-                right: 0,
-                position: 'absolute',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
+            sx={{
+              top: 0,
+              left: 0,
+              bottom: 0,
+              right: 0,
+              position: "absolute",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
           >
             <Typography
-                variant="caption"
-                component="div"
-                sx={{ color: 'text.secondary' }}
+              variant="caption"
+              component="div"
+              sx={{ color: "text.secondary" }}
             >
               {potOdds.toFixed(1)}
             </Typography>
