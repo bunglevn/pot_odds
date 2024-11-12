@@ -101,7 +101,7 @@ export function PlayView({ getPotOdds, getEquity, getDecision }) {
         />
       </div>
 
-      <div style={{ position: "absolute", right: "21vw", top: "23vh"}}>
+      <div style={{ position: "absolute", right: "21vw", top: "23vh" }}>
         <Stack direction="column" spacing={2} alignItems="flex-end">
           <InputWindows
             title={"Opponent's Call Value"}
