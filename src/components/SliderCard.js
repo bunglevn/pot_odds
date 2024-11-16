@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import { Slider, Input } from "@mui/material/";
 import Chip from "../images/chip.png";
 
-function InputWindows({ title, sliderValue, handleSliderChange }) {
+function SliderCard({ title, sliderValue, handleSliderChange }) {
   const handleInputChange = (event) => {
     const value = event.target.value === "" ? 0 : Number(event.target.value);
     handleSliderChange(value);
@@ -18,9 +18,9 @@ function InputWindows({ title, sliderValue, handleSliderChange }) {
   };
 
   const windowStyle = {
-    width: "200px",
-    height: "100px",
-    minHeight: "100px",
+    width: "md",
+    height: "md",
+    minHeight: "md",
     backgroundColor: "#eb2225",
     borderRadius: "5px",
     boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)",
@@ -45,8 +45,6 @@ function InputWindows({ title, sliderValue, handleSliderChange }) {
         max={1000}
         sx={{
           color: "#00bfa5",
-          width: "180px",
-          height: "10px",
           "& .MuiSlider-thumb": {
             width: 25,
             height: 25,
@@ -68,7 +66,6 @@ function InputWindows({ title, sliderValue, handleSliderChange }) {
           onBlur={handleBlur}
           sx={{
             color: "#fff",
-            width: "50px",
           }}
           inputProps={{
             step: 5,
@@ -83,4 +80,4 @@ function InputWindows({ title, sliderValue, handleSliderChange }) {
   );
 }
 
-export default InputWindows;
+export default SliderCard;

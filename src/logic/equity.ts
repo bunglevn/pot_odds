@@ -1,11 +1,11 @@
+// @ts-ignore
 import {
   SuitShortCutMap,
   NumberShortCutMap,
 } from "../types/poker-hand.type.ts";
 
 const ALL_CARDS = 52;
-const SAME_CATEGORY = 13;
-const HOLE_NUM = 2;
+const SAME_SUIT = 13;
 
 export function calculateEquity({
   hole,
@@ -20,7 +20,13 @@ export function calculateEquity({
   const riverCards = convertImageToCardShortcut(river).filter(
     validCardNumberAndSuit,
   );
-  const n = riverCards.length + HOLE_NUM;
+
+  const n = riverCards.length + holeCards.length;
+
+  if (n === 0) {
+    return 0;
+  }
+
   const numberSet = new Set([
     ...holeCards.map(getCardNumber),
     ...riverCards.map(getCardNumber),
@@ -37,21 +43,22 @@ export function calculateEquity({
   let equity = 0;
 
   // Suit 1: already have 4 of same suit, aiming for flush
-  if (numSuit <= n - 4) {
-    if (n === 6) equity += (SAME_CATEGORY - 4) / (ALL_CARDS - n);
-    else
+  if (numSuit <= n - 3) {
+    if (n === 6) equity += (SAME_SUIT - 4) / (ALL_CARDS - n);
+    else {
       equity +=
-        (SAME_CATEGORY - 4) / (ALL_CARDS - n) + // Card 4 is same suit
-        (((ALL_CARDS - n - SAME_CATEGORY + 4) / (ALL_CARDS - n)) * // Card 4 different suit but card 5 same suite
-          (SAME_CATEGORY - 4)) /
+        (SAME_SUIT - 4) / (ALL_CARDS - n) + // Card 4 is same suit
+        (((ALL_CARDS - n - SAME_SUIT + 4) / (ALL_CARDS - n)) * // Card 4 different suit but card 5 same suite
+          (SAME_SUIT - 4)) /
           (ALL_CARDS - n - 1);
+    }
   }
 
   // Suit 2: already have 3 of same suit and 3 on river, aiming for flush
-  if (numSuit <= n - 3 && n === 5) {
+  // If there are >3 on river, the combination cannot form flush
+  if (numSuit <= n - 2 && numSuit > n - 3 && n === 5) {
     equity +=
-      (SAME_CATEGORY - 3) / (ALL_CARDS - n) +
-      (SAME_CATEGORY - 4) / (ALL_CARDS - n - 1);
+      (SAME_SUIT - 3) / (ALL_CARDS - n) + (SAME_SUIT - 4) / (ALL_CARDS - n - 1);
   }
 
   // Number 1: already have 4 consecutive cards, aiming for straight
@@ -100,7 +107,7 @@ export function calculateEquity({
     }
   }
 
-  return equity;
+  return equity * 100;
 }
 
 export function convertImageToCardShortcut(cardList: string[]) {
@@ -123,8 +130,8 @@ function getCardSuit(card: string) {
   return card.substring(card.length - 1, card.length);
 }
 
-function validCardNumberAndSuit(card: string) {
-  return card !== "";
+export function validCardNumberAndSuit(card: string) {
+  return card !== "undefined" && card !== "";
 }
 
 function hasFourConsecutive(sortedNumbers: number[]) {
