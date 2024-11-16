@@ -19,10 +19,8 @@ export function calculateEquity({
   const riverCards = convertImageToCardShortcut(river).filter(
     validCardNumberAndSuit,
   );
-  console.log(riverCards);
 
   const n = riverCards.length + holeCards.length;
-  console.log(n);
 
   if (n === 0) {
     return 0;
@@ -42,7 +40,6 @@ export function calculateEquity({
   const numSuit = suitSet.size;
 
   let equity = 0;
-  console.log(n);
 
   // Suit 1: already have 4 of same suit, aiming for flush
   if (numSuit <= n - 3) {
@@ -53,12 +50,12 @@ export function calculateEquity({
         (((ALL_CARDS - n - SAME_SUIT + 4) / (ALL_CARDS - n)) * // Card 4 different suit but card 5 same suite
           (SAME_SUIT - 4)) /
           (ALL_CARDS - n - 1);
-      console.log((SAME_SUIT - 4) / (ALL_CARDS - n));
     }
   }
 
   // Suit 2: already have 3 of same suit and 3 on river, aiming for flush
-  if (numSuit <= n - 3 && n === 5) {
+  // If there are >3 on river, the combination cannot form flush
+  if (numSuit <= n - 2 && numSuit > n-3 && n === 5) {
     equity +=
       (SAME_SUIT - 3) / (ALL_CARDS - n) + (SAME_SUIT - 4) / (ALL_CARDS - n - 1);
   }
@@ -132,8 +129,8 @@ function getCardSuit(card: string) {
   return card.substring(card.length - 1, card.length);
 }
 
-function validCardNumberAndSuit(card: string) {
-  return card !== "undefined";
+export function validCardNumberAndSuit(card: string) {
+  return card !== "undefined" && card !== "";
 }
 
 function hasFourConsecutive(sortedNumbers: number[]) {

@@ -50,6 +50,35 @@ function ChooseCard({ onSelect, onClose, cardKey }) {
     require.context("../images/PNG-cards-1.3", false, /\.(png|jpe?g|svg)$/),
   );
 
+  const rankOrder = {
+    ace: 1,
+    2: 2,
+    3: 3,
+    4: 4,
+    5: 5,
+    6: 6,
+    7: 7,
+    8: 8,
+    9: 9,
+    10: 10,
+    jack: 11,
+    queen: 12,
+    king: 13,
+  };
+
+// Function to extract rank and suit from the file name
+  const extractRank = (filename) => {
+    const match = filename.match(/(\w+)_of_\w+/);
+    return match ? match[1] : null;
+  };
+
+// Sort the array based on the extracted rank
+  allCardImages.sort((a, b) => {
+    const rankA = extractRank(a).toLowerCase();
+    const rankB = extractRank(b).toLowerCase();
+    return rankOrder[rankA] - rankOrder[rankB];
+  });
+
   return (
     <div style={styles.overlay} onClick={onClose}>
       <div style={styles.content} onClick={(e) => e.stopPropagation()}>

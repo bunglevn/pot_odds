@@ -5,7 +5,7 @@ import InputWindows from "./InputWindows";
 import { useEffect, useState } from "react";
 import my_avatar from "../images/avatar/you.jpg";
 import { Stack, Avatar } from "@mui/material";
-import { calculateEquity } from "../logic/equity.ts";
+import {calculateEquity, validCardNumberAndSuit} from "../logic/equity.ts";
 import { calculatePotOdds, shouldCall } from "../logic/pot-odds.ts";
 
 const avatar_size = 110;
@@ -20,13 +20,19 @@ export function PlayView({ getPotOdds, getEquity, getDecision }) {
   const [selectedCard, setSelectedCard] = useState("");
 
   useEffect(() => {
-    // Calculate values
-    const potOdds = calculatePotOdds({ potValue, opponentCall });
-    getPotOdds(potOdds);
-    const equity = calculateEquity({ hole, river });
-    getEquity(equity);
-    const decision = shouldCall(equity, potOdds);
-    getDecision(decision);
+      console.log(river)
+      const n = river.filter(validCardNumberAndSuit).length + hole.filter(validCardNumberAndSuit).length
+      console.log(n)
+
+      if (n >= 5) {
+          // Calculate values
+          const potOdds = calculatePotOdds({ potValue, opponentCall });
+          getPotOdds(potOdds);
+          const equity = calculateEquity({ hole, river });
+          getEquity(equity);
+          const decision = shouldCall(equity, potOdds);
+          getDecision(decision);
+      }
   }, [hole, river, potValue, opponentCall]);
 
   const chooseCardImage = (image, key) => {
