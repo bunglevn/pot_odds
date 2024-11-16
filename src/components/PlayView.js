@@ -17,20 +17,20 @@ export function PlayView({
   getExpectedValue,
   getOpponentCall,
   getPotValue,
+  getNHole,
+  getNRiver,
 }) {
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [potValue, setPotValue] = useState(20);
   const [opponentCall, setOpponentCall] = useState(20);
-
   const [river, setRiver] = useState(["", "", "", "", ""]);
   const [hole, setHole] = useState(["", ""]);
-
   const [selectedCard, setSelectedCard] = useState("");
 
   useEffect(() => {
-    const n =
-      river.filter(validCardNumberAndSuit).length +
-      hole.filter(validCardNumberAndSuit).length;
+    const nRiver = river.filter(validCardNumberAndSuit).length;
+    const nHole = hole.filter(validCardNumberAndSuit).length;
+    const n = nRiver + nHole;
 
     if (n >= 5) {
       // Calculate values
@@ -49,6 +49,8 @@ export function PlayView({
       getOpponentCall(opponentCall);
       getPotValue(potValue);
     }
+    getNRiver(nRiver);
+    getNHole(nHole);
   }, [hole, river, potValue, opponentCall]);
 
   const chooseCardImage = (image, key) => {

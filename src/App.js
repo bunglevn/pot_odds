@@ -10,8 +10,11 @@ function App() {
   const [equity, setEquity] = useState(0);
   const [decision, setDecision] = useState(false);
   const [expectedValue, setExpectedValue] = useState(0);
-  const [opponentCall, setOpponentCall] = useState(1);
-  const [potValue, setPotValue] = useState(2);
+  const [opponentCall, setOpponentCall] = useState(0);
+  const [potValue, setPotValue] = useState(0);
+
+  const [nRiver, setNRiver] = useState(0);
+  const [nHole, setNHole] = useState(0);
 
   const data = {
     potOdds,
@@ -27,7 +30,7 @@ function App() {
       <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={1}>
           <Grid size={2.5}>
-            <SummaryTable data={data} />
+            <SummaryTable nRiver={nRiver} nHole={nHole} data={data} />
           </Grid>
 
           <Grid size={9.5}>
@@ -38,6 +41,8 @@ function App() {
               getExpectedValue={(value) => setExpectedValue(value)}
               getOpponentCall={(value) => setOpponentCall(value)}
               getPotValue={(value) => setPotValue(value)}
+              getNRiver={(value) => setNRiver(value)}
+              getNHole={(value) => setNHole(value)}
             />
           </Grid>
         </Grid>
