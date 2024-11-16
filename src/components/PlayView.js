@@ -15,6 +15,8 @@ export function PlayView({
   getEquity,
   getDecision,
   getExpectedValue,
+  getOpponentCall,
+  getPotValue,
 }) {
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [potValue, setPotValue] = useState(20);
@@ -33,7 +35,6 @@ export function PlayView({
     if (n >= 5) {
       // Calculate values
       const potOdds = calculatePotOdds({ potValue, opponentCall });
-      getPotOdds(potOdds);
       const equity = calculateEquity({ hole, river });
       getEquity(equity);
       const decision = shouldCall(equity, potOdds);
@@ -44,6 +45,9 @@ export function PlayView({
         potValue,
       });
       getExpectedValue(expectedValue);
+      getPotOdds(potOdds);
+      getOpponentCall(opponentCall);
+      getPotValue(potValue);
     }
   }, [hole, river, potValue, opponentCall]);
 

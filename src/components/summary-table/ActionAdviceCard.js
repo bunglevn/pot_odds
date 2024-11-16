@@ -1,6 +1,6 @@
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
-import { Typography } from "@mui/material";
+import { Alert, Typography } from "@mui/material";
 import CardContent from "@mui/material/CardContent";
 
 export function ActionAdviceCard({ title, value }) {
@@ -15,15 +15,12 @@ export function ActionAdviceCard({ title, value }) {
         <Typography variant="subtitle1" fontWeight="bold" fontSize={20}>
           {title}
         </Typography>
-        <Typography
-          variant="caption"
-          component="div"
-          sx={{ color: value ? "green" : "red" }}
-          fontWeight="bold"
-          fontSize={35}
+        <Alert
+          severity={value ? "success" : "warning"}
+          sx={{ fontSize: 25, justifyContent: "center", alignItems: "center" }}
         >
           {value ? "Call" : "Fold"}
-        </Typography>
+        </Alert>
       </CardContent>
     </Card>
   );

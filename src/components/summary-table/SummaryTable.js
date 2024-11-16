@@ -1,20 +1,11 @@
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
-import {
-  Typography,
-  Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  IconButton,
-} from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
+import { Button } from "@mui/material";
 import { CircularProgressCard } from "./CircularProgressCard";
 import { ActionAdviceCard } from "./ActionAdviceCard";
 import { useState } from "react";
 import { ExpectedValueCard } from "./ExpectedValueCard";
+import { ExplanationDialog } from "../explanation-dialog/explanation-dialog";
 
 const Item = styled(Paper)(({ theme }) => ({
   height: "97.5vh",
@@ -28,7 +19,8 @@ const Item = styled(Paper)(({ theme }) => ({
   }),
 }));
 
-function SummaryTable({ potOdds, equity, decision, expectedValue }) {
+function SummaryTable({ data }) {
+  const { potOdds, equity, decision, expectedValue } = data;
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -63,29 +55,7 @@ function SummaryTable({ potOdds, equity, decision, expectedValue }) {
           Explanation
         </Button>
 
-        <Dialog open={open} onClose={handleClose}>
-          <DialogTitle>
-            More Details
-            <IconButton
-              aria-label="close"
-              onClick={handleClose}
-              sx={{
-                position: "absolute",
-                right: 8,
-                top: 8,
-                color: (theme) => theme.palette.grey[500],
-              }}
-            >
-              <CloseIcon />
-            </IconButton>
-          </DialogTitle>
-          <DialogContent>
-            <Typography variant="body1">
-              Add additional information or details about pot odds, equity, and
-              decision.
-            </Typography>
-          </DialogContent>
-        </Dialog>
+        <ExplanationDialog open={open} handleClose={handleClose} data={data} />
       </Item>
     </div>
   );
