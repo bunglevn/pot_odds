@@ -1,3 +1,4 @@
+// @ts-ignore
 import {
   SuitShortCutMap,
   NumberShortCutMap,
@@ -55,7 +56,7 @@ export function calculateEquity({
 
   // Suit 2: already have 3 of same suit and 3 on river, aiming for flush
   // If there are >3 on river, the combination cannot form flush
-  if (numSuit <= n - 2 && numSuit > n-3 && n === 5) {
+  if (numSuit <= n - 2 && numSuit > n - 3 && n === 5) {
     equity +=
       (SAME_SUIT - 3) / (ALL_CARDS - n) + (SAME_SUIT - 4) / (ALL_CARDS - n - 1);
   }

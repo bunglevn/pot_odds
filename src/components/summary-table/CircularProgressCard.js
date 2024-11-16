@@ -3,6 +3,7 @@ import Stack from "@mui/material/Stack";
 import { Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
+import CardContent from "@mui/material/CardContent";
 
 export function CircularProgressCard({ title, value }) {
   if (value === 100) {
@@ -13,19 +14,11 @@ export function CircularProgressCard({ title, value }) {
   return (
     <Card
       sx={{
-        maxWidth: 270,
-        margin: "auto",
-        padding: 2,
         borderRadius: 3,
         boxShadow: 3,
-        mt: 2,
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "center",
       }}
     >
-      <Stack direction="row" alignItems="center" spacing={2}>
+      <CardContent className="items-center" sx={{ padding: 0 }}>
         <Typography variant="subtitle1" fontWeight="bold" fontSize={25}>
           {title}
         </Typography>
@@ -35,7 +28,7 @@ export function CircularProgressCard({ title, value }) {
             value={value}
             size={100}
             thickness={5}
-            sx={{ color: "primary.main" }}
+            sx={{ color: "#1d7243" }}
           />
           <Box
             sx={{
@@ -60,7 +53,7 @@ export function CircularProgressCard({ title, value }) {
             </Typography>
           </Box>
         </Box>
-      </Stack>
+      </CardContent>
     </Card>
   );
 }

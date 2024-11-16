@@ -66,13 +66,13 @@ function ChooseCard({ onSelect, onClose, cardKey }) {
     king: 13,
   };
 
-// Function to extract rank and suit from the file name
+  // Function to extract rank and suit from the file name
   const extractRank = (filename) => {
     const match = filename.match(/(\w+)_of_\w+/);
     return match ? match[1] : null;
   };
 
-// Sort the array based on the extracted rank
+  // Sort the array based on the extracted rank
   allCardImages.sort((a, b) => {
     const rankA = extractRank(a).toLowerCase();
     const rankB = extractRank(b).toLowerCase();

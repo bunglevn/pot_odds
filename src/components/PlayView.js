@@ -1,15 +1,21 @@
 import "./PlayView.css";
 import Card from "./Card";
 import ChooseCard from "./ChooseCard";
-import InputWindows from "./InputWindows";
+import SliderCard from "./SliderCard";
 import { useEffect, useState } from "react";
 import my_avatar from "../images/avatar/you.jpg";
 import { Stack, Avatar } from "@mui/material";
-import {calculateEquity, validCardNumberAndSuit} from "../logic/equity.ts";
+import { calculateEquity, validCardNumberAndSuit } from "../logic/equity.ts";
 import { calculatePotOdds, shouldCall } from "../logic/pot-odds.ts";
+import { calculateExpectedValue } from "../logic/expected-value.ts";
 
 const avatar_size = 110;
-export function PlayView({ getPotOdds, getEquity, getDecision }) {
+export function PlayView({
+  getPotOdds,
+  getEquity,
+  getDecision,
+  getExpectedValue,
+}) {
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [potValue, setPotValue] = useState(20);
   const [opponentCall, setOpponentCall] = useState(20);
@@ -20,19 +26,25 @@ export function PlayView({ getPotOdds, getEquity, getDecision }) {
   const [selectedCard, setSelectedCard] = useState("");
 
   useEffect(() => {
-      console.log(river)
-      const n = river.filter(validCardNumberAndSuit).length + hole.filter(validCardNumberAndSuit).length
-      console.log(n)
+    const n =
+      river.filter(validCardNumberAndSuit).length +
+      hole.filter(validCardNumberAndSuit).length;
 
-      if (n >= 5) {
-          // Calculate values
-          const potOdds = calculatePotOdds({ potValue, opponentCall });
-          getPotOdds(potOdds);
-          const equity = calculateEquity({ hole, river });
-          getEquity(equity);
-          const decision = shouldCall(equity, potOdds);
-          getDecision(decision);
-      }
+    if (n >= 5) {
+      // Calculate values
+      const potOdds = calculatePotOdds({ potValue, opponentCall });
+      getPotOdds(potOdds);
+      const equity = calculateEquity({ hole, river });
+      getEquity(equity);
+      const decision = shouldCall(equity, potOdds);
+      getDecision(decision);
+      const expectedValue = calculateExpectedValue({
+        equity,
+        opponentCall,
+        potValue,
+      });
+      getExpectedValue(expectedValue);
+    }
   }, [hole, river, potValue, opponentCall]);
 
   const chooseCardImage = (image, key) => {
@@ -100,7 +112,7 @@ export function PlayView({ getPotOdds, getEquity, getDecision }) {
       </div>
 
       <div style={{ position: "absolute", left: "43vw", top: "23vh" }}>
-        <InputWindows
+        <SliderCard
           title={"Total Pot"}
           sliderValue={potValue}
           handleSliderChange={(event, value) => setPotValue(value)}
@@ -109,7 +121,7 @@ export function PlayView({ getPotOdds, getEquity, getDecision }) {
 
       <div style={{ position: "absolute", right: "21vw", top: "23vh" }}>
         <Stack direction="column" spacing={2} alignItems="flex-end">
-          <InputWindows
+          <SliderCard
             title={"Opponent's Call Value"}
             sliderValue={opponentCall}
             handleSliderChange={(event, value) => setOpponentCall(value)}

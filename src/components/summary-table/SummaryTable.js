@@ -11,11 +11,10 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import summaryTableImg from "../images/summaryTable.png";
 import { CircularProgressCard } from "./CircularProgressCard";
 import { ActionAdviceCard } from "./ActionAdviceCard";
 import { useState } from "react";
+import { ExpectedValueCard } from "./ExpectedValueCard";
 
 const Item = styled(Paper)(({ theme }) => ({
   height: "97.5vh",
@@ -29,7 +28,7 @@ const Item = styled(Paper)(({ theme }) => ({
   }),
 }));
 
-function SummaryTable({ potOdds, equity, decision }) {
+function SummaryTable({ potOdds, equity, decision, expectedValue }) {
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -42,43 +41,15 @@ function SummaryTable({ potOdds, equity, decision }) {
 
   return (
     <div>
-      <Item>
-        <Card sx={{ width: "100%", marginBottom: 1 }}>
-          <CardMedia
-            sx={{ height: 130, marginBottom: 1 }}
-            image={summaryTableImg}
-            title="Cover"
-          />
-          <CardContent>
-            <Typography
-              gutterBottom
-              variant="h5"
-              component="h1"
-              align="center"
-              fontWeight="bold"
-            >
-              Summary Table
-            </Typography>
-          </CardContent>
-        </Card>
-
-        <CircularProgressCard title={"Pot Odds"} value={potOdds} />
-
-        <CircularProgressCard title={"Equity"} value={equity} />
-
+      <Item className="flex flex-col gap-4 justify-between">
         <ActionAdviceCard title={"You should"} value={decision} />
-
-        {/* View More button */}
+        <CircularProgressCard title={"Pot Odds"} value={potOdds} />
+        <CircularProgressCard title={"Equity"} value={equity} />
+        <ExpectedValueCard expectedValue={expectedValue} />
         <Button
-          variant="contained" // You can change it to "outlined" for a border style
-          color="primary" // You can change the color to "secondary" or custom color from theme
+          variant="contained"
           sx={{
-            height: 50,
-            width: "100%",
-            mt: 2,
-            textDecoration: "underline",
             borderRadius: 3, // Rounded corners
-            padding: "10px 20px", // Adjusting padding
             backgroundColor: "#F6C667", // Custom background color
             boxShadow: 3, // Adding shadow for a 3D effect
             color: "#133E87",
@@ -89,10 +60,9 @@ function SummaryTable({ potOdds, equity, decision }) {
           }}
           onClick={handleClickOpen}
         >
-          View More
+          Explanation
         </Button>
 
-        {/* Popup dialog */}
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle>
             More Details
