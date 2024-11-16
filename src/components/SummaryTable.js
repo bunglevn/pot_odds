@@ -74,7 +74,7 @@ function SummaryTable({ potOdds, equity, decision }) {
           color="primary" // You can change the color to "secondary" or custom color from theme
           sx={{
             height: 50,
-            width: 295,
+            width: "100%",
             mt: 2,
             textDecoration: "underline",
             borderRadius: 3, // Rounded corners

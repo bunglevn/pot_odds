@@ -17,7 +17,6 @@ export function ActionAdviceCard({ title, value }) {
       }}
     >
       <Grid container>
-        {/* Left half for title */}
         <Grid
           item
           xs={6}
@@ -32,7 +31,6 @@ export function ActionAdviceCard({ title, value }) {
           </Typography>
         </Grid>
 
-        {/* Right half for value with red fill */}
         <Grid
           item
           xs={6}
