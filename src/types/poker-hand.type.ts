@@ -28,5 +28,3 @@ export const SuitShortCutMap: Record<string, string> = {
   ["diamonds"]: "D",
   ["diamonds2"]: "D",
 };
-
-export default PokerHandType;

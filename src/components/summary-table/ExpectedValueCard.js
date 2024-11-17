@@ -17,7 +17,7 @@ export const ExpectedValueCard = ({ expectedValue }) => {
     >
       <CardContent sx={{ padding: 0 }} className="items-center">
         <Typography variant="subtitle1" fontWeight="bold" fontSize={25}>
-          Expected Value
+          Expected
         </Typography>
         <Box sx={{ position: "relative", display: "inline-flex" }}>
           <CircularProgress

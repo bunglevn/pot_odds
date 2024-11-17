@@ -5,9 +5,10 @@ import SliderCard from "./SliderCard";
 import { useEffect, useState } from "react";
 import my_avatar from "../images/avatar/you.jpg";
 import { Stack, Avatar } from "@mui/material";
-import { calculateEquity, validCardNumberAndSuit } from "../logic/equity.ts";
+import { calculateEquity } from "../logic/equity.ts";
 import { calculatePotOdds, shouldCall } from "../logic/pot-odds.ts";
 import { calculateExpectedValue } from "../logic/expected-value.ts";
+import {validCardNumberAndSuit} from "../logic/utils.ts";
 
 const avatar_size = 110;
 export function PlayView({
