@@ -2,7 +2,7 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import { Slider, Input } from "@mui/material/";
 import Chip from "../images/chip.png";
-import {Typography} from "@mui/material";
+import { Typography } from "@mui/material";
 
 function SliderCard({ title, sliderValue, handleSliderChange }) {
   const handleInputChange = (event) => {
@@ -67,7 +67,7 @@ function SliderCard({ title, sliderValue, handleSliderChange }) {
           onBlur={handleBlur}
           sx={{
             color: "#fff",
-            width: "70%"
+            width: "70%",
           }}
           inputProps={{
             step: 5,

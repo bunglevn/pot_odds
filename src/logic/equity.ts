@@ -1,5 +1,19 @@
-import {convertImageToCardShortcut, getCardNumber, getCardSuit, validCardNumberAndSuit } from "./utils.ts";
-import {checkRoyalFlush, hasConsecutive, hasSameSuit, hasTwoPairs} from "./combination-check.ts";
+import {
+  convertImageToCardShortcut,
+  getCardNumber,
+  getCardSuit,
+  validCardNumberAndSuit,
+} from "./utils.ts";
+import {
+  checkOnlyOnePair,
+  checkRoyalFlush,
+  combinationCheck,
+  hasConsecutive,
+  hasSameKind,
+  hasSameSuit,
+  hasTwoPairs,
+} from "./combination-check.ts";
+import {PokerHandType, PotentialHandType} from "../types/poker-hand.type.ts";
 
 const ALL_CARDS = 52;
 const SAME_SUIT = 13;
@@ -10,7 +24,7 @@ export function calculateEquity({
 }: {
   hole: string[];
   river: string[];
-}) {
+}):{equity: number, cases: (PokerHandType | PotentialHandType)[]} {
   const holeCards = convertImageToCardShortcut(hole).filter(
     validCardNumberAndSuit,
   );
@@ -32,15 +46,22 @@ export function calculateEquity({
     ...riverCards.map(getCardSuit),
   ]);
   const numSuit = suitSet.size;
-  const suitList = Array.from(suitSet)
+  const suitList = Array.from(suitSet);
 
-  let equity = 0;
+  // 10% of winning with high card
+  let equity = 0.1;
+  let cases = [];
+
+  if (n === 7) {
+    return combinationCheck(holeCards, riverCards, sortedNumbers, suitList, n);
+  }
 
   // RoyalFlush: always win
-  if (checkRoyalFlush(holeCards, riverCards)) return 100
+  if (checkRoyalFlush(holeCards, riverCards)) return {equity: 100, cases: [PokerHandType.RoyalFlush]};
 
   // Suit 1: already have 4 of same suit, aiming for flush
-  if (hasSameSuit(suitList, 4, n)) {
+  if (hasSameSuit(riverCards, holeCards, suitList, 4)) {
+    cases.push(PotentialHandType.FourSameSuit)
     if (n === 6) equity += (SAME_SUIT - 4) / (ALL_CARDS - n);
     else {
       equity +=
@@ -53,13 +74,15 @@ export function calculateEquity({
 
   // Suit 2: already have 3 of same suit and 3 on river, aiming for flush
   // If there are >3 on river, the combination cannot form flush
-  if (hasSameSuit(suitList, 3, n) && numSuit > n - 3 && n === 5) {
+  if (hasSameSuit(riverCards, holeCards, suitList, 3) && numSuit > n - 3 && n === 5) {
+    cases.push(PotentialHandType.ThreeSameSuit)
     equity +=
       (SAME_SUIT - 3) / (ALL_CARDS - n) + (SAME_SUIT - 4) / (ALL_CARDS - n - 1);
   }
 
   // Number 1: already have 4 consecutive cards, aiming for straight
   if (hasConsecutive(sortedNumbers, 4)) {
+    cases.push(PotentialHandType.FourConsecutive)
     if (n === 6) equity += (2 * 4) / (ALL_CARDS - n);
     else
       equity +=
@@ -69,23 +92,27 @@ export function calculateEquity({
   }
 
   // Number 2: already have 3 consecutive cards, aiming for straight
-  if (hasConsecutive(sortedNumbers, 3) && n === 5)
+  if (hasConsecutive(sortedNumbers, 3) && n === 5) {
+    cases.push(PotentialHandType.ThreeConsecutive)
     equity += (4 / (ALL_CARDS - n)) * (4 / (ALL_CARDS - n - 1));
+  }
 
   // Number 3: already have 2 pairs, aiming for fullhouse
   if (hasTwoPairs(sortedNumbers, n)) {
+    cases.push(PotentialHandType.TwoPairs)
     if (n === 6) {
       equity += (2 + 2) / (ALL_CARDS - n);
-    }
-    else
+    } else
       equity +=
         (2 + 2) / (ALL_CARDS - n) +
         (((ALL_CARDS - n - 2 - 2) / (ALL_CARDS - n)) * (2 + 2)) /
           (ALL_CARDS - n - 1);
   }
 
+  console.log(hasSameKind(riverCards, holeCards, sortedNumbers, 3))
   // Number 3: already have 3 of a kind
-  if (sortedNumbers.length <= n - 3) {
+  if (hasSameKind(riverCards, holeCards, sortedNumbers, 3)) {
+    cases.push(PotentialHandType.ThreeOfAKind)
     if (n === 6) {
       // aiming for 4 of a kind
       equity += 1 / (ALL_CARDS - n);
@@ -106,7 +133,22 @@ export function calculateEquity({
     }
   }
 
-  return equity * 100;
+  if (checkOnlyOnePair(sortedNumbers, n)) {
+    cases.push(PotentialHandType.OnlyOnePair)
+    if (n === 5) {
+      // 3 of a kind
+      equity += (((2 * 2) / (52 - n)) * (52 - n - 2)) / (52 - n - 1);
+      // 4 of a kind
+      equity += (2 / (52 - n)) * (1 / (52 - n - 1));
+      // full house
+      equity += (6 / (52 - n)) * (1 / (52 - n - 1));
+    } else {
+      equity += 2 / (52 - n);
+    }
+  }
+
+  equity *= 100;
+  return { equity, cases };
 }
 
 const rankToNumber: Record<string, number> = {
@@ -119,8 +161,8 @@ const rankToNumber: Record<string, number> = {
   "8": 8,
   "9": 9,
   "10": 10,
-  "J": 11,
-  "Q": 12,
-  "K": 13,
-  "A": 14,
+  J: 11,
+  Q: 12,
+  K: 13,
+  A: 14,
 };

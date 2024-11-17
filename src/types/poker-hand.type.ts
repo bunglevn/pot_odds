@@ -1,14 +1,24 @@
-enum PokerHandType {
+export enum PokerHandType {
   HighHand = "High Hand",
   Pair = "Pair",
   TwoPair = "Two Pair",
-  ThreeOfAKind = "ThreeOfAKind",
+  ThreeOfAKind = "Three Of A Kind",
   Straight = "Straight",
   Flush = "Flush",
-  FullHouse = "FullHouse",
-  FourOfAKind = "FourOfAKind",
-  StraightFlush = "StraightFlush",
-  RoyalFlush = "RoyalFlush",
+  FullHouse = "Full House",
+  FourOfAKind = "Four Of A Kind",
+  StraightFlush = "Straight Flush",
+  RoyalFlush = "Royal Flush",
+}
+
+export enum PotentialHandType {
+  FourSameSuit = "Four with the same Suit",
+  ThreeSameSuit = "Three with the same Suit",
+  FourConsecutive = "Four consecutives",
+  ThreeConsecutive = "Three consecutives",
+  TwoPairs = "Two pairs",
+  ThreeOfAKind = "Three of a Kind",
+  OnlyOnePair = "Only one pair"
 }
 
 export const NumberShortCutMap: Record<string, string> = {

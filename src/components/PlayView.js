@@ -8,7 +8,7 @@ import { Stack, Avatar } from "@mui/material";
 import { calculateEquity } from "../logic/equity.ts";
 import { calculatePotOdds, shouldCall } from "../logic/pot-odds.ts";
 import { calculateExpectedValue } from "../logic/expected-value.ts";
-import {validCardNumberAndSuit} from "../logic/utils.ts";
+import { validCardNumberAndSuit } from "../logic/utils.ts";
 
 const avatar_size = 110;
 export function PlayView({
@@ -36,7 +36,8 @@ export function PlayView({
     if (n >= 5) {
       // Calculate values
       const potOdds = calculatePotOdds({ potValue, opponentCall });
-      const equity = calculateEquity({ hole, river });
+      const equity = calculateEquity({ hole, river }).equity;
+      console.log(calculateEquity({ hole, river }))
       getEquity(equity);
       const decision = shouldCall(equity, potOdds);
       getDecision(decision);
