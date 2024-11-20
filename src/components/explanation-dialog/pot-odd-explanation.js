@@ -17,7 +17,7 @@ export const PotOddExplanation = (data) => {
         </Typography>
       </Alert>
       <div className="flex p-4 justify-center items-center">
-        <StaticMathField style={{ fontSize: 25 }}>
+        <StaticMathField style={{ fontSize: 20 }}>
           {"\\text{Pot odds} = \\frac{\\text{Opponent's call} \\times 100%}{\\text{Opponent's call} + \\text{Pot value}} = " +
             `\\frac{${potValue} \\times 100%}{${potValue} + ${opponentCall}}=${potOdds.toFixed(2)}%`}
         </StaticMathField>

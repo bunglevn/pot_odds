@@ -11,6 +11,32 @@ export enum PokerHandType {
   RoyalFlush = "Royal Flush",
 }
 
+export const pokerHands = [
+  PokerHandType.HighHand,
+  PokerHandType.Pair,
+  PokerHandType.TwoPair,
+  PokerHandType.ThreeOfAKind,
+  PokerHandType.Straight,
+  PokerHandType.Flush,
+  PokerHandType.FullHouse,
+  PokerHandType.FourOfAKind,
+  PokerHandType.StraightFlush,
+  PokerHandType.RoyalFlush,
+];
+
+export const handEquityMap: Record<PokerHandType, number> = {
+  [PokerHandType.HighHand]: 0.1,
+  [PokerHandType.Pair]: 0.2,
+  [PokerHandType.TwoPair]: 0.3,
+  [PokerHandType.ThreeOfAKind]: 0.4,
+  [PokerHandType.Straight]: 0.5,
+  [PokerHandType.Flush]: 0.6,
+  [PokerHandType.FullHouse]: 0.7,
+  [PokerHandType.FourOfAKind]: 0.8,
+  [PokerHandType.StraightFlush]: 0.9,
+  [PokerHandType.RoyalFlush]: 1,
+};
+
 export enum PotentialHandType {
   FourSameSuit = "Four with the same Suit",
   ThreeSameSuit = "Three with the same Suit",

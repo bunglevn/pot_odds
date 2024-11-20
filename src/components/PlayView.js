@@ -4,7 +4,7 @@ import ChooseCard from "./ChooseCard";
 import SliderCard from "./SliderCard";
 import { useEffect, useState } from "react";
 import my_avatar from "../images/avatar/you.jpg";
-import {Stack, Avatar, Typography} from "@mui/material";
+import { Stack, Avatar, Typography } from "@mui/material";
 import { calculateEquity } from "../logic/equity.ts";
 import { calculatePotOdds, shouldCall } from "../logic/pot-odds.ts";
 import { calculateExpectedValue } from "../logic/expected-value.ts";

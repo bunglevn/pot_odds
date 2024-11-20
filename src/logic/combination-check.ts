@@ -1,4 +1,4 @@
-import { PokerHandType } from "../types/poker-hand.type.ts";
+import { PokerHandType, PotentialHandType } from "../types/poker-hand.type.ts";
 import { getCardNumber } from "./utils.ts";
 
 export function hasTwoPairs(cards: string[]) {
@@ -60,12 +60,10 @@ export function hasSameKind(
   numberList.forEach((rank) => {
     let count = 0;
     riverCards.forEach((num) => {
-      console.log(num, rank, num.includes(rank.toString()));
-      if (num.includes(rank.toString())) count += 1;
+      if (getCardNumber(num) === rank) count += 1;
     });
     holeCards.forEach((num) => {
-      console.log(num, rank, num.includes(rank.toString()));
-      if (num.includes(rank.toString())) count += 1;
+      if (getCardNumber(num) === rank) count += 1;
     });
     if (count === n) {
       result = true;
@@ -130,29 +128,32 @@ export function checkOnlyOnePair(
   );
 }
 
-export function combinationCheck(
+export const combinationCheck = (
   holeCards: string[],
   riverCards: string[],
   numberList: number[],
   suitList: string[],
   totalCards: number,
-) {
+): {
+  equity: number;
+  cases: (PokerHandType | PotentialHandType)[];
+} => {
   if (checkRoyalFlush(holeCards, riverCards))
-    return { equity: 100, cases: [PokerHandType.RoyalFlush] };
+    return { equity: 1, cases: [PokerHandType.RoyalFlush] };
   //fixme: straighflust
   if (checkFourOfAKind(riverCards, holeCards, numberList))
-    return { equity: 80, cases: [PokerHandType.FourOfAKind] };
+    return { equity: 0.8, cases: [PokerHandType.FourOfAKind] };
   if (checkFullHouse(riverCards, holeCards, numberList, totalCards))
-    return { equity: 70, cases: [PokerHandType.FullHouse] };
+    return { equity: 0.7, cases: [PokerHandType.FullHouse] };
   if (checkFlush(riverCards, holeCards, suitList))
-    return { equity: 60, cases: [PokerHandType.Flush] };
+    return { equity: 0.6, cases: [PokerHandType.Flush] };
   if (checkStraight(numberList))
-    return { equity: 50, cases: [PokerHandType.Straight] };
+    return { equity: 0.5, cases: [PokerHandType.Straight] };
   if (hasSameKind(riverCards, holeCards, numberList, 3))
-    return { equity: 40, cases: [PokerHandType.ThreeOfAKind] };
+    return { equity: 0.4, cases: [PokerHandType.ThreeOfAKind] };
   if (hasTwoPairs(riverCards.concat(holeCards)))
-    return { equity: 30, cases: [PokerHandType.TwoPair] };
+    return { equity: 0.3, cases: [PokerHandType.TwoPair] };
   if (checkOnlyOnePair(riverCards, holeCards, numberList, totalCards))
-    return { equity: 20, cases: [PokerHandType.Pair] };
-  return { equity: 10, cases: [PokerHandType.HighHand] };
-}
+    return { equity: 0.2, cases: [PokerHandType.Pair] };
+  return { equity: 0.1, cases: [PokerHandType.HighHand] };
+};

@@ -2,21 +2,22 @@ import {
   NumberShortCutMap,
   SuitShortCutMap,
 } from "../types/poker-hand.type.ts";
+import { rankToNumber } from "./equity.ts";
 
 export function convertImageToCardShortcut(cardList: string[]) {
-  return cardList.map((imgPath) => {
+  return cardList.filter(validCardNumberAndSuit).map((imgPath) => {
     const imgName = imgPath.split("/").pop();
     const card = imgName.split(".")[0].split("_");
     const number = NumberShortCutMap[card[0]]
       ? NumberShortCutMap[card[0]]
       : card[0];
     const suit = SuitShortCutMap[card.pop()];
-    return number + suit;
+    return rankToNumber[number] + suit;
   });
 }
 
 export function getCardNumber(card: string) {
-  return card.substring(0, card.length - 1);
+  return parseInt(card.substring(0, card.length - 1));
 }
 
 export function getCardSuit(card: string) {

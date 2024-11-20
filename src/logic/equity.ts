@@ -25,39 +25,39 @@ export function calculateEquity({
   hole: string[];
   river: string[];
 }): { equity: number; cases: (PokerHandType | PotentialHandType)[] } {
-  const holeCards = convertImageToCardShortcut(hole).filter(
-    validCardNumberAndSuit,
-  );
-  const riverCards = convertImageToCardShortcut(river).filter(
-    validCardNumberAndSuit,
-  );
+  console.log(convertImageToCardShortcut(river));
+  const holeCards = convertImageToCardShortcut(hole);
+  const riverCards = convertImageToCardShortcut(river);
 
   const n = riverCards.length + holeCards.length;
 
-  const numberSet = new Set([
-    ...holeCards.map(getCardNumber),
-    ...riverCards.map(getCardNumber),
-  ]);
-  const sortedNumbers = Array.from(numberSet)
-    .map((rank) => rankToNumber[rank])
-    .sort((a, b) => a - b);
+  const numberSet = Array.from(
+    new Set([
+      ...holeCards.map(getCardNumber),
+      ...riverCards.map(getCardNumber),
+    ]),
+  );
+
+  const sortedNumbers = numberSet.sort((a, b) => a - b);
   const suitSet = new Set([
     ...holeCards.map(getCardSuit),
     ...riverCards.map(getCardSuit),
   ]);
   const suitList = Array.from(suitSet);
 
-  // 10% of winning with high card
-  let equity = 0.1;
-  let cases = [];
-
-  if (n === 7) {
-    return combinationCheck(holeCards, riverCards, sortedNumbers, suitList, n);
-  }
+  const combCheck = combinationCheck(
+    holeCards,
+    riverCards,
+    sortedNumbers,
+    suitList,
+    n,
+  );
 
   // RoyalFlush: always win
-  if (checkRoyalFlush(holeCards, riverCards))
-    return { equity: 100, cases: [PokerHandType.RoyalFlush] };
+  if (combCheck.equity === 1) return combCheck;
+
+  let equity = combCheck.equity;
+  let cases = combCheck.cases;
 
   // Suit 1: already have 4 of same suit, aiming for flush
   if (hasSameSuit(riverCards, holeCards, suitList, 4)) {
@@ -155,8 +155,6 @@ export function calculateEquity({
       equity += 2 / (52 - n);
     }
   }
-
-  //fixme: have fullhouse -> can be 4 of a kind
 
   equity *= 100;
   equity = Number(equity.toFixed(2));

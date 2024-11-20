@@ -19,7 +19,7 @@ export const DecisionExplanation = ({ data }) => {
         </Typography>
       </Alert>
       <div className="flex p-4 justify-center items-center">
-        <StaticMathField style={{ fontSize: 25 }}>
+        <StaticMathField style={{ fontSize: 20 }}>
           {`\\text{Equity} ${decision ? "\\geq" : "\\leq"} \\text{Pot odds } (${equity.equity.toFixed(2)}% ${decision ? "\\geq" : "\\leq"} ${potOdds.toFixed(2)}%)`}
         </StaticMathField>
       </div>
