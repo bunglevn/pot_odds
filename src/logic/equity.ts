@@ -1,8 +1,19 @@
-// @ts-ignore
 import {
-  SuitShortCutMap,
-  NumberShortCutMap,
-} from "../types/poker-hand.type.ts";
+  convertImageToCardShortcut,
+  getCardNumber,
+  getCardSuit,
+  validCardNumberAndSuit,
+} from "./utils.ts";
+import {
+  checkOnlyOnePair,
+  checkRoyalFlush,
+  combinationCheck,
+  hasConsecutive,
+  hasSameKind,
+  hasSameSuit,
+  hasTwoPairs,
+} from "./combination-check.ts";
+import { PokerHandType, PotentialHandType } from "../types/poker-hand.type.ts";
 
 const ALL_CARDS = 52;
 const SAME_SUIT = 13;
@@ -13,37 +24,44 @@ export function calculateEquity({
 }: {
   hole: string[];
   river: string[];
-}) {
-  const holeCards = convertImageToCardShortcut(hole).filter(
-    validCardNumberAndSuit,
-  );
-  const riverCards = convertImageToCardShortcut(river).filter(
-    validCardNumberAndSuit,
-  );
+}): { equity: number; cases: (PokerHandType | PotentialHandType)[] } {
+  console.log(convertImageToCardShortcut(river));
+  const holeCards = convertImageToCardShortcut(hole);
+  const riverCards = convertImageToCardShortcut(river);
 
   const n = riverCards.length + holeCards.length;
 
-  if (n === 0) {
-    return 0;
-  }
+  const numberSet = Array.from(
+    new Set([
+      ...holeCards.map(getCardNumber),
+      ...riverCards.map(getCardNumber),
+    ]),
+  );
 
-  const numberSet = new Set([
-    ...holeCards.map(getCardNumber),
-    ...riverCards.map(getCardNumber),
-  ]);
-  const sortedNumbers = Array.from(numberSet)
-    .map((rank) => rankToNumber[rank])
-    .sort((a, b) => a - b);
+  const sortedNumbers = numberSet.sort((a, b) => a - b);
   const suitSet = new Set([
     ...holeCards.map(getCardSuit),
     ...riverCards.map(getCardSuit),
   ]);
-  const numSuit = suitSet.size;
+  const suitList = Array.from(suitSet);
 
-  let equity = 0;
+  const combCheck = combinationCheck(
+    holeCards,
+    riverCards,
+    sortedNumbers,
+    suitList,
+    n,
+  );
+
+  // RoyalFlush: always win
+  if (combCheck.equity === 1) return combCheck;
+
+  let equity = combCheck.equity;
+  let cases = combCheck.cases;
 
   // Suit 1: already have 4 of same suit, aiming for flush
-  if (numSuit <= n - 3) {
+  if (hasSameSuit(riverCards, holeCards, suitList, 4)) {
+    cases.push(PotentialHandType.FourSameSuit);
     if (n === 6) equity += (SAME_SUIT - 4) / (ALL_CARDS - n);
     else {
       equity +=
@@ -56,13 +74,16 @@ export function calculateEquity({
 
   // Suit 2: already have 3 of same suit and 3 on river, aiming for flush
   // If there are >3 on river, the combination cannot form flush
-  if (numSuit <= n - 2 && numSuit > n - 3 && n === 5) {
+  if (hasSameSuit(riverCards, holeCards, suitList, 3) && n === 5) {
+    cases.push(PotentialHandType.ThreeSameSuit);
     equity +=
-      (SAME_SUIT - 3) / (ALL_CARDS - n) + (SAME_SUIT - 4) / (ALL_CARDS - n - 1);
+      (((SAME_SUIT - 3) / (ALL_CARDS - n)) * (SAME_SUIT - 4)) /
+      (ALL_CARDS - n - 1);
   }
 
   // Number 1: already have 4 consecutive cards, aiming for straight
-  if (hasFourConsecutive(sortedNumbers)) {
+  if (hasConsecutive(sortedNumbers, 4)) {
+    cases.push(PotentialHandType.FourConsecutive);
     if (n === 6) equity += (2 * 4) / (ALL_CARDS - n);
     else
       equity +=
@@ -72,26 +93,40 @@ export function calculateEquity({
   }
 
   // Number 2: already have 3 consecutive cards, aiming for straight
-  if (hasThreeConsecutive(sortedNumbers) && n === 5)
-    equity += (4 / (ALL_CARDS - n)) * (4 / (ALL_CARDS - n - 1));
+  if (
+    hasConsecutive(sortedNumbers, 3) &&
+    !hasConsecutive(sortedNumbers, 4) &&
+    n === 5
+  ) {
+    cases.push(PotentialHandType.ThreeConsecutive);
+    equity += 4 * (4 / (ALL_CARDS - n)) * (4 / (ALL_CARDS - n - 1));
+  }
 
   // Number 3: already have 2 pairs, aiming for fullhouse
-  if (hasTwoPairs(sortedNumbers)) {
-    if (n === 6) equity += (2 + 2) / (ALL_CARDS - n);
-    else
+  if (
+    hasTwoPairs(riverCards.concat(holeCards)) &&
+    !hasSameKind(riverCards, holeCards, sortedNumbers, 3)
+  ) {
+    cases.push(PotentialHandType.TwoPairs);
+    if (n === 6) {
+      equity += (2 + 2) / (ALL_CARDS - n);
+    } else
       equity +=
         (2 + 2) / (ALL_CARDS - n) +
         (((ALL_CARDS - n - 2 - 2) / (ALL_CARDS - n)) * (2 + 2)) /
           (ALL_CARDS - n - 1);
   }
-
   // Number 3: already have 3 of a kind
-  if (sortedNumbers.length <= n - 3) {
+  if (
+    hasSameKind(riverCards, holeCards, sortedNumbers, 3) &&
+    !hasTwoPairs(riverCards.concat(holeCards))
+  ) {
+    cases.push(PotentialHandType.ThreeOfAKind);
     if (n === 6) {
       // aiming for 4 of a kind
       equity += 1 / (ALL_CARDS - n);
       // aiming for full house
-      equity += (3 + 3) / (ALL_CARDS - n);
+      equity += (3 * 3) / (ALL_CARDS - n);
     }
 
     if (n === 5) {
@@ -101,74 +136,32 @@ export function calculateEquity({
         (ALL_CARDS - n - 1) / (ALL_CARDS - n) / (ALL_CARDS - n - 1);
       // aiming for full house
       equity +=
-        (3 + 3) / (ALL_CARDS - n) +
-        (((ALL_CARDS - n - 3 - 3) / (ALL_CARDS - n)) * (3 + 3)) /
+        (2 * 3) / (ALL_CARDS - n) +
+        (((ALL_CARDS - n - 3 - 3) / (ALL_CARDS - n)) * (2 * 3)) /
           (ALL_CARDS - n - 1);
     }
   }
 
-  return equity * 100;
-}
-
-export function convertImageToCardShortcut(cardList: string[]) {
-  return cardList.map((imgPath) => {
-    const imgName = imgPath.split("/").pop();
-    const card = imgName.split(".")[0].split("_");
-    const number = NumberShortCutMap[card[0]]
-      ? NumberShortCutMap[card[0]]
-      : card[0];
-    const suit = SuitShortCutMap[card.pop()];
-    return number + suit;
-  });
-}
-
-function getCardNumber(card: string) {
-  return card.substring(0, card.length);
-}
-
-function getCardSuit(card: string) {
-  return card.substring(card.length - 1, card.length);
-}
-
-export function validCardNumberAndSuit(card: string) {
-  return card !== "undefined" && card !== "";
-}
-
-function hasFourConsecutive(sortedNumbers: number[]) {
-  let consecutiveCount = 1;
-
-  for (let i = 1; i < sortedNumbers.length; i++) {
-    if (sortedNumbers[i] === sortedNumbers[i - 1] + 1) {
-      consecutiveCount++;
-      if (consecutiveCount === 4) {
-        return true;
-      }
-    } else if (sortedNumbers[i] !== sortedNumbers[i - 1]) {
-      consecutiveCount = 1;
+  if (checkOnlyOnePair(riverCards, holeCards, sortedNumbers, n)) {
+    cases.push(PotentialHandType.OnlyOnePair);
+    if (n === 5) {
+      // 3 of a kind
+      equity += (((2 * 2) / (52 - n)) * (52 - n - 2)) / (52 - n - 1);
+      // 4 of a kind
+      equity += (2 / (52 - n)) * (1 / (52 - n - 1));
+      // full house
+      equity += (6 / (52 - n)) * (1 / (52 - n - 1));
+    } else {
+      equity += 2 / (52 - n);
     }
   }
 
-  return false;
+  equity *= 100;
+  equity = Number(equity.toFixed(2));
+  return { equity, cases };
 }
 
-function hasThreeConsecutive(sortedNumbers: number[]) {
-  let consecutiveCount = 1;
-
-  for (let i = 1; i < sortedNumbers.length; i++) {
-    if (sortedNumbers[i] === sortedNumbers[i - 1] + 1) {
-      consecutiveCount++;
-      if (consecutiveCount === 3) {
-        return true;
-      }
-    } else if (sortedNumbers[i] !== sortedNumbers[i - 1]) {
-      consecutiveCount = 1;
-    }
-  }
-
-  return false;
-}
-
-const rankToNumber = {
+export const rankToNumber: Record<string, number> = {
   "2": 2,
   "3": 3,
   "4": 4,
@@ -183,21 +176,3 @@ const rankToNumber = {
   K: 13,
   A: 14,
 };
-
-function hasTwoPairs(cards: number[]) {
-  const rankCounts = {};
-  for (const card of cards) {
-    const rank = rankToNumber[card];
-    rankCounts[rank] = (rankCounts[rank] || 0) + 1;
-  }
-
-  let pairs = 0;
-  for (const count of Object.values(rankCounts)) {
-    if (count === 2) {
-      pairs++;
-    }
-  }
-
-  // Return true if there are exactly two pairs
-  return pairs === 2;
-}

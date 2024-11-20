@@ -2,6 +2,7 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import { Slider, Input } from "@mui/material/";
 import Chip from "../images/chip.png";
+import { Typography } from "@mui/material";
 
 function SliderCard({ title, sliderValue, handleSliderChange }) {
   const handleInputChange = (event) => {
@@ -18,9 +19,7 @@ function SliderCard({ title, sliderValue, handleSliderChange }) {
   };
 
   const windowStyle = {
-    width: "md",
-    height: "md",
-    minHeight: "md",
+    width: "100%",
     backgroundColor: "#eb2225",
     borderRadius: "5px",
     boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)",
@@ -42,7 +41,7 @@ function SliderCard({ title, sliderValue, handleSliderChange }) {
         value={sliderValue}
         onChange={handleSliderChange}
         valueLabelDisplay="auto"
-        max={1000}
+        max={10000}
         sx={{
           color: "#00bfa5",
           "& .MuiSlider-thumb": {
@@ -57,8 +56,8 @@ function SliderCard({ title, sliderValue, handleSliderChange }) {
         }}
         aria-labelledby={`${title}-slider`}
       />
-      <div style={titleStyle}>
-        Value:
+      <div style={titleStyle} className="w-full text-x flex flex-row">
+        <Typography> Value: </Typography>
         <Input
           value={sliderValue}
           size="small"
@@ -66,6 +65,7 @@ function SliderCard({ title, sliderValue, handleSliderChange }) {
           onBlur={handleBlur}
           sx={{
             color: "#fff",
+            width: "70%",
           }}
           inputProps={{
             step: 5,
