@@ -13,7 +13,7 @@ import {
   hasSameSuit,
   hasTwoPairs,
 } from "./combination-check.ts";
-import {PokerHandType, PotentialHandType} from "../types/poker-hand.type.ts";
+import { PokerHandType, PotentialHandType } from "../types/poker-hand.type.ts";
 
 const ALL_CARDS = 52;
 const SAME_SUIT = 13;
@@ -24,7 +24,7 @@ export function calculateEquity({
 }: {
   hole: string[];
   river: string[];
-}):{equity: number, cases: (PokerHandType | PotentialHandType)[]} {
+}): { equity: number; cases: (PokerHandType | PotentialHandType)[] } {
   const holeCards = convertImageToCardShortcut(hole).filter(
     validCardNumberAndSuit,
   );
@@ -45,7 +45,6 @@ export function calculateEquity({
     ...holeCards.map(getCardSuit),
     ...riverCards.map(getCardSuit),
   ]);
-  const numSuit = suitSet.size;
   const suitList = Array.from(suitSet);
 
   // 10% of winning with high card
@@ -57,11 +56,12 @@ export function calculateEquity({
   }
 
   // RoyalFlush: always win
-  if (checkRoyalFlush(holeCards, riverCards)) return {equity: 100, cases: [PokerHandType.RoyalFlush]};
+  if (checkRoyalFlush(holeCards, riverCards))
+    return { equity: 100, cases: [PokerHandType.RoyalFlush] };
 
   // Suit 1: already have 4 of same suit, aiming for flush
   if (hasSameSuit(riverCards, holeCards, suitList, 4)) {
-    cases.push(PotentialHandType.FourSameSuit)
+    cases.push(PotentialHandType.FourSameSuit);
     if (n === 6) equity += (SAME_SUIT - 4) / (ALL_CARDS - n);
     else {
       equity +=
@@ -74,15 +74,16 @@ export function calculateEquity({
 
   // Suit 2: already have 3 of same suit and 3 on river, aiming for flush
   // If there are >3 on river, the combination cannot form flush
-  if (hasSameSuit(riverCards, holeCards, suitList, 3) && numSuit > n - 3 && n === 5) {
-    cases.push(PotentialHandType.ThreeSameSuit)
+  if (hasSameSuit(riverCards, holeCards, suitList, 3) && n === 5) {
+    cases.push(PotentialHandType.ThreeSameSuit);
     equity +=
-      (SAME_SUIT - 3) / (ALL_CARDS - n) + (SAME_SUIT - 4) / (ALL_CARDS - n - 1);
+      (((SAME_SUIT - 3) / (ALL_CARDS - n)) * (SAME_SUIT - 4)) /
+      (ALL_CARDS - n - 1);
   }
 
   // Number 1: already have 4 consecutive cards, aiming for straight
   if (hasConsecutive(sortedNumbers, 4)) {
-    cases.push(PotentialHandType.FourConsecutive)
+    cases.push(PotentialHandType.FourConsecutive);
     if (n === 6) equity += (2 * 4) / (ALL_CARDS - n);
     else
       equity +=
@@ -92,14 +93,21 @@ export function calculateEquity({
   }
 
   // Number 2: already have 3 consecutive cards, aiming for straight
-  if (hasConsecutive(sortedNumbers, 3) && n === 5) {
-    cases.push(PotentialHandType.ThreeConsecutive)
-    equity += (4 / (ALL_CARDS - n)) * (4 / (ALL_CARDS - n - 1));
+  if (
+    hasConsecutive(sortedNumbers, 3) &&
+    !hasConsecutive(sortedNumbers, 4) &&
+    n === 5
+  ) {
+    cases.push(PotentialHandType.ThreeConsecutive);
+    equity += 4 * (4 / (ALL_CARDS - n)) * (4 / (ALL_CARDS - n - 1));
   }
 
   // Number 3: already have 2 pairs, aiming for fullhouse
-  if (hasTwoPairs(sortedNumbers, n)) {
-    cases.push(PotentialHandType.TwoPairs)
+  if (
+    hasTwoPairs(riverCards.concat(holeCards)) &&
+    !hasSameKind(riverCards, holeCards, sortedNumbers, 3)
+  ) {
+    cases.push(PotentialHandType.TwoPairs);
     if (n === 6) {
       equity += (2 + 2) / (ALL_CARDS - n);
     } else
@@ -108,16 +116,17 @@ export function calculateEquity({
         (((ALL_CARDS - n - 2 - 2) / (ALL_CARDS - n)) * (2 + 2)) /
           (ALL_CARDS - n - 1);
   }
-
-  console.log(hasSameKind(riverCards, holeCards, sortedNumbers, 3))
   // Number 3: already have 3 of a kind
-  if (hasSameKind(riverCards, holeCards, sortedNumbers, 3)) {
-    cases.push(PotentialHandType.ThreeOfAKind)
+  if (
+    hasSameKind(riverCards, holeCards, sortedNumbers, 3) &&
+    !hasTwoPairs(riverCards.concat(holeCards))
+  ) {
+    cases.push(PotentialHandType.ThreeOfAKind);
     if (n === 6) {
       // aiming for 4 of a kind
       equity += 1 / (ALL_CARDS - n);
       // aiming for full house
-      equity += (3 + 3) / (ALL_CARDS - n);
+      equity += (3 * 3) / (ALL_CARDS - n);
     }
 
     if (n === 5) {
@@ -127,14 +136,14 @@ export function calculateEquity({
         (ALL_CARDS - n - 1) / (ALL_CARDS - n) / (ALL_CARDS - n - 1);
       // aiming for full house
       equity +=
-        (3 + 3) / (ALL_CARDS - n) +
-        (((ALL_CARDS - n - 3 - 3) / (ALL_CARDS - n)) * (3 + 3)) /
+        (2 * 3) / (ALL_CARDS - n) +
+        (((ALL_CARDS - n - 3 - 3) / (ALL_CARDS - n)) * (2 * 3)) /
           (ALL_CARDS - n - 1);
     }
   }
 
-  if (checkOnlyOnePair(sortedNumbers, n)) {
-    cases.push(PotentialHandType.OnlyOnePair)
+  if (checkOnlyOnePair(riverCards, holeCards, sortedNumbers, n)) {
+    cases.push(PotentialHandType.OnlyOnePair);
     if (n === 5) {
       // 3 of a kind
       equity += (((2 * 2) / (52 - n)) * (52 - n - 2)) / (52 - n - 1);
@@ -147,11 +156,14 @@ export function calculateEquity({
     }
   }
 
+  //fixme: have fullhouse -> can be 4 of a kind
+
   equity *= 100;
+  equity = Number(equity.toFixed(2));
   return { equity, cases };
 }
 
-const rankToNumber: Record<string, number> = {
+export const rankToNumber: Record<string, number> = {
   "2": 2,
   "3": 3,
   "4": 4,

@@ -1,9 +1,14 @@
 import { PokerHandType } from "../types/poker-hand.type.ts";
+import { getCardNumber } from "./utils.ts";
 
-// fixme: wrong logic, use loop
-export function hasTwoPairs(cards: number[], n: number) {
-  const nRank = cards.length;
-  return nRank <= n - 2;
+export function hasTwoPairs(cards: string[]) {
+  const ranks = cards.map(getCardNumber);
+  const rankCounts: Record<number, number> = {};
+  for (const rank of ranks) {
+    rankCounts[rank] = (rankCounts[rank] || 0) + 1;
+  }
+  const pairs = Object.values(rankCounts).filter((count) => count === 2);
+  return pairs.length >= 2;
 }
 
 export function hasConsecutive(sortedNumbers: number[], n: number) {
@@ -23,41 +28,50 @@ export function hasConsecutive(sortedNumbers: number[], n: number) {
   return false;
 }
 
-export function hasSameSuit(riverCards: string[], holeCards: string[], suitList: string[], n: number) {
-  let count = 0;
-  suitList.forEach(suit => {
-    riverCards.forEach(num => {
-      if (num.includes(suit)) count += 1
-    })
-    holeCards.forEach(num => {
-      if (num.includes(suit)) count += 1
-    })
-  })
-  if (count >= n) {
-    return true
-  }
-  return false;
+export function hasSameSuit(
+  riverCards: string[],
+  holeCards: string[],
+  suitList: string[],
+  n: number,
+) {
+  let result = false;
+  suitList.forEach((suit) => {
+    let count = 0;
+    riverCards.forEach((num) => {
+      if (num.includes(suit)) count += 1;
+    });
+    holeCards.forEach((num) => {
+      if (num.includes(suit)) count += 1;
+    });
+    if (count === n) {
+      result = true;
+    }
+  });
+  return result;
 }
 
 export function hasSameKind(
-    riverCards: string[], holeCards: string[],
+  riverCards: string[],
+  holeCards: string[],
   numberList: number[],
   n: number,
 ) {
-  let count = 0;
-  numberList.forEach(rank => {
-    riverCards.forEach(num => {
-      console.log(num, rank, num.includes(rank.toString()))
-      if (num.includes(rank.toString())) count += 1
-    })
-    holeCards.forEach(num => {
-      if (num.includes(rank.toString())) count += 1
-    })
-  })
-  if (count >= n) {
-    return true
-  }
-  return false;
+  let result = false;
+  numberList.forEach((rank) => {
+    let count = 0;
+    riverCards.forEach((num) => {
+      console.log(num, rank, num.includes(rank.toString()));
+      if (num.includes(rank.toString())) count += 1;
+    });
+    holeCards.forEach((num) => {
+      console.log(num, rank, num.includes(rank.toString()));
+      if (num.includes(rank.toString())) count += 1;
+    });
+    if (count === n) {
+      result = true;
+    }
+  });
+  return result;
 }
 
 export function checkRoyalFlush(holeCards: string[], riverCards: string[]) {
@@ -73,14 +87,23 @@ export function checkRoyalFlush(holeCards: string[], riverCards: string[]) {
 //     return checkStraight(numberList) && checkFlush(suitList, n)
 // }
 
-export function checkFourOfAKind(riverCards: string[], holeCards: string[],numberList: number[]) {
+export function checkFourOfAKind(
+  riverCards: string[],
+  holeCards: string[],
+  numberList: number[],
+) {
   return hasSameKind(riverCards, holeCards, numberList, 4);
 }
 
-export function checkFullHouse(riverCards: string[], holeCards: string[],numberList: number[], totalCards: number) {
+export function checkFullHouse(
+  riverCards: string[],
+  holeCards: string[],
+  numberList: number[],
+  totalCards: number,
+) {
   return (
     hasSameKind(riverCards, holeCards, numberList, 3) &&
-    hasTwoPairs(numberList, totalCards)
+    hasTwoPairs(riverCards.concat(holeCards))
   );
 }
 
@@ -88,12 +111,23 @@ export function checkStraight(numberList: number[]) {
   return hasConsecutive(numberList, 5);
 }
 
-export function checkFlush(riverCards: string[], holeCards: string[], suitList: string[]) {
+export function checkFlush(
+  riverCards: string[],
+  holeCards: string[],
+  suitList: string[],
+) {
   return hasSameSuit(riverCards, holeCards, suitList, 5);
 }
 
-export function checkOnlyOnePair(numberList: number[], n: number) {
-  return numberList.length === n - 1 && !hasTwoPairs(numberList, n);
+export function checkOnlyOnePair(
+  riverCards: string[],
+  holeCards: string[],
+  numberList: number[],
+  n: number,
+) {
+  return (
+    numberList.length === n - 1 && !hasTwoPairs(riverCards.concat(holeCards))
+  );
 }
 
 export function combinationCheck(
@@ -116,9 +150,9 @@ export function combinationCheck(
     return { equity: 50, cases: [PokerHandType.Straight] };
   if (hasSameKind(riverCards, holeCards, numberList, 3))
     return { equity: 40, cases: [PokerHandType.ThreeOfAKind] };
-  if (hasTwoPairs(numberList, totalCards))
+  if (hasTwoPairs(riverCards.concat(holeCards)))
     return { equity: 30, cases: [PokerHandType.TwoPair] };
-  if (checkOnlyOnePair(numberList, totalCards))
+  if (checkOnlyOnePair(riverCards, holeCards, numberList, totalCards))
     return { equity: 20, cases: [PokerHandType.Pair] };
   return { equity: 10, cases: [PokerHandType.HighHand] };
 }

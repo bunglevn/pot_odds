@@ -1,12 +1,13 @@
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
-import { Button, Typography } from "@mui/material";
+import { Button, CardMedia, Typography } from "@mui/material";
 import { CircularProgressCard } from "./CircularProgressCard";
 import { ActionAdviceCard } from "./ActionAdviceCard";
 import { useState } from "react";
 import { ExpectedValueCard } from "./ExpectedValueCard";
 import { ExplanationDialog } from "../explanation-dialog/explanation-dialog";
 import CheckIcon from "@mui/icons-material/Check";
+import Card from "@mui/material/Card";
 
 const Item = styled(Paper)(({ theme }) => ({
   height: "97.5vh",
@@ -39,7 +40,7 @@ function SummaryTable({ data, nRiver, nHole }) {
         <div className="justify-between flex flex-col gap-2">
           <ActionAdviceCard title={"You should"} value={decision} />
           <CircularProgressCard title={"Pot Odds"} value={potOdds} />
-          <CircularProgressCard title={"Equity"} value={equity} />
+          <CircularProgressCard title={"Equity"} value={equity.equity} />
           <ExpectedValueCard expectedValue={expectedValue} />
           <Button
             variant="contained"
@@ -77,7 +78,12 @@ function SummaryTable({ data, nRiver, nHole }) {
         </div>
       )}
 
-      <ExplanationDialog open={open} handleClose={handleClose} data={data} />
+      <ExplanationDialog
+        open={open}
+        handleClose={handleClose}
+        data={data}
+        numCard={nHole + nRiver}
+      />
     </Item>
   );
 }

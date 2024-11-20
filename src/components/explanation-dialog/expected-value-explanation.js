@@ -19,21 +19,19 @@ export const ExpectedValueExplanation = ({ data }) => {
         </Typography>
       </Alert>
       <div className="flex flex-col pl-12 gap-2">
-        <StaticMathField style={{ fontSize: 25 }}>
+        <StaticMathField>
           {`\\text{Let X be the average amount of money you can win or lose per bet over the long run.}`}
         </StaticMathField>
-        <StaticMathField style={{ fontSize: 25 }}>
+        <StaticMathField>
           {`E(X)= P_{win} \\times \\text{Amount win} + P_{lose} \\times \\text{Amount lose}`}
         </StaticMathField>
-        <StaticMathField style={{ fontSize: 25 }}>
+        <StaticMathField>
           {`= \\text{Equity} \\times (\\text{Pot value} + \\text{Opponent's Call}) + (1-\\text{Equity}) \\times \\text{Opponent's Call}`}
         </StaticMathField>
-        <StaticMathField style={{ fontSize: 25 }}>
-          {`= ${equity} \\times (${potValue} + ${opponentCall}) + (1-${equity}) \\times ${opponentCall}`}
+        <StaticMathField>
+          {`= ${equity.equity} \\times (${potValue} + ${opponentCall}) + (1-${equity.equity}) \\times ${opponentCall}`}
         </StaticMathField>
-        <StaticMathField style={{ fontSize: 25 }}>
-          {`= ${expectedValue}`}
-        </StaticMathField>
+        <StaticMathField>{`= ${expectedValue}`}</StaticMathField>
       </div>
     </>
   );

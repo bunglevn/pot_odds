@@ -7,7 +7,7 @@ import { useState } from "react";
 
 function App() {
   const [potOdds, setPotOdds] = useState(0);
-  const [equity, setEquity] = useState(0);
+  const [equity, setEquity] = useState({ equity: 0, cases: [] });
   const [decision, setDecision] = useState(false);
   const [expectedValue, setExpectedValue] = useState(0);
   const [opponentCall, setOpponentCall] = useState(0);

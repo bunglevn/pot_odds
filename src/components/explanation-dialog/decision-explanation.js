@@ -4,7 +4,7 @@ import { StaticMathField } from "react-mathquill";
 export const DecisionExplanation = ({ data }) => {
   const { decision, equity, potOdds } = data;
   return (
-    <>
+    <div className="text-xs">
       <Alert severity="info">
         <Typography display="inline" fontWeight="bold">
           Decision:{" "}
@@ -20,12 +20,12 @@ export const DecisionExplanation = ({ data }) => {
       </Alert>
       <div className="flex p-4 justify-center items-center">
         <StaticMathField style={{ fontSize: 25 }}>
-          {`\\text{Equity} ${decision ? "\\geq" : "\\leq"} \\text{Pot odds } (${equity.toFixed(2)}% ${decision ? "\\geq" : "\\leq"} ${potOdds.toFixed(2)}%)`}
+          {`\\text{Equity} ${decision ? "\\geq" : "\\leq"} \\text{Pot odds } (${equity.equity.toFixed(2)}% ${decision ? "\\geq" : "\\leq"} ${potOdds.toFixed(2)}%)`}
         </StaticMathField>
       </div>
       <Alert severity={decision ? "success" : "warning"}>
         Hence, you should <b>{decision ? "Call" : "Fold"}</b>
       </Alert>
-    </>
+    </div>
   );
 };

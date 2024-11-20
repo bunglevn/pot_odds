@@ -19,9 +19,7 @@ function SliderCard({ title, sliderValue, handleSliderChange }) {
   };
 
   const windowStyle = {
-    width: "md",
-    height: "md",
-    minHeight: "md",
+    width: "100%",
     backgroundColor: "#eb2225",
     borderRadius: "5px",
     boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)",

@@ -18,8 +18,35 @@ export enum PotentialHandType {
   ThreeConsecutive = "Three consecutives",
   TwoPairs = "Two pairs",
   ThreeOfAKind = "Three of a Kind",
-  OnlyOnePair = "Only one pair"
+  OnlyOnePair = "Only one pair",
 }
+
+export const aimingHandMap: Record<PotentialHandType, PokerHandType[]> = {
+  [PotentialHandType.FourSameSuit]: [PokerHandType.Flush],
+  [PotentialHandType.ThreeSameSuit]: [PokerHandType.Flush],
+  [PotentialHandType.FourConsecutive]: [PokerHandType.Straight],
+  [PotentialHandType.ThreeConsecutive]: [PokerHandType.Straight],
+  [PotentialHandType.TwoPairs]: [PokerHandType.FullHouse],
+  [PotentialHandType.ThreeOfAKind]: [
+    PokerHandType.FourOfAKind,
+    PokerHandType.FullHouse,
+  ],
+  [PotentialHandType.OnlyOnePair]: [
+    PokerHandType.ThreeOfAKind,
+    PokerHandType.FourOfAKind,
+    PokerHandType.FullHouse,
+  ],
+};
+
+export const potentialHand: PotentialHandType[] = [
+  PotentialHandType.FourSameSuit,
+  PotentialHandType.ThreeSameSuit,
+  PotentialHandType.FourConsecutive,
+  PotentialHandType.ThreeConsecutive,
+  PotentialHandType.TwoPairs,
+  PotentialHandType.ThreeOfAKind,
+  PotentialHandType.OnlyOnePair,
+];
 
 export const NumberShortCutMap: Record<string, string> = {
   ["king"]: "K",
