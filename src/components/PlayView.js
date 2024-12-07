@@ -2,9 +2,9 @@ import "./PlayView.css";
 import Card from "./Card";
 import ChooseCard from "./ChooseCard";
 import SliderCard from "./SliderCard";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import my_avatar from "../images/avatar/you.jpg";
-import { Stack, Avatar, Typography } from "@mui/material";
+import { Stack, Avatar } from "@mui/material";
 import { calculateEquity } from "../logic/equity.ts";
 import { calculatePotOdds, shouldCall } from "../logic/pot-odds.ts";
 import { calculateExpectedValue } from "../logic/expected-value.ts";
@@ -37,7 +37,6 @@ export function PlayView({
       // Calculate values
       const potOdds = calculatePotOdds({ potValue, opponentCall });
       const equityResult = calculateEquity({ hole, river });
-      console.log(equityResult);
       getEquity(equityResult);
       const equity = equityResult.equity;
       const decision = shouldCall(equity, potOdds);
@@ -80,11 +79,15 @@ export function PlayView({
         {" "}
         {river.map((image, index) => (
           <Card
+            disabled={index !== 0 && river[index - 1] === ""}
             key={"river-" + index}
-            image={image}
+            image={river[index] !== "" ? image : undefined}
             onCardClick={() => {
               setIsPopupVisible(true);
               setSelectedCard("river-" + index);
+            }}
+            onRemove={() => {
+              setRiver((prevImages) => removeImage(prevImages, index));
             }}
           />
         ))}
@@ -102,11 +105,15 @@ export function PlayView({
       >
         {hole.map((image, index) => (
           <Card
+            disabled={index !== 0 && hole[index - 1] === ""}
             key={"hole" + index}
             image={image}
             onCardClick={() => {
               setIsPopupVisible(true);
               setSelectedCard("hole-" + index);
+            }}
+            onRemove={() => {
+              setHole((prevImages) => removeImage(prevImages, index));
             }}
           />
         ))}
@@ -160,5 +167,11 @@ export function PlayView({
 const setNewImage = (prevImages, index, image) => {
   const newImages = [...prevImages];
   newImages[index] = image;
+  return newImages;
+};
+
+const removeImage = (prevImages, indexToDrop) => {
+  const newImages = [...prevImages];
+  newImages[indexToDrop] = "";
   return newImages;
 };
