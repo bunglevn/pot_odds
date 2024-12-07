@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button } from "@mui/material";
 
-function Card({ image, onCardClick, onRemove, disabled }) {
+function Card({ image, onCardClick, onRemove, disabled, removable }) {
   const [isHovered, setIsHovered] = useState(false);
 
   const cardStyle = {
@@ -45,7 +45,7 @@ function Card({ image, onCardClick, onRemove, disabled }) {
           }}
           size="medium"
           onClick={(e) => {
-            if (image) {
+            if (removable && image) {
               e.stopPropagation();
               onRemove();
               return;
@@ -54,9 +54,10 @@ function Card({ image, onCardClick, onRemove, disabled }) {
             if (!disabled) onCardClick();
           }}
         >
-          {image && "Click to remove"}
+          {image && removable && "Click to remove"}
           {disabled && "Please choose the previous card first"}
           {!disabled && !image && "Click to add"}
+          {image && !removable && "Click to change"}
         </Button>
       )}
     </div>

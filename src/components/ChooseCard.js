@@ -1,6 +1,7 @@
 import React from "react";
+import { Typography } from "@mui/material";
 
-function ChooseCard({ onSelect, onClose, cardKey }) {
+function ChooseCard({ onSelect, onClose, cardKey, chosenCards }) {
   const styles = {
     overlay: {
       position: "fixed",
@@ -35,13 +36,6 @@ function ChooseCard({ onSelect, onClose, cardKey }) {
       gridTemplateColumns: "repeat(auto-fill, minmax(100px, 1fr))",
       gap: "10px",
       marginTop: "20px",
-    },
-    image: {
-      width: "100%",
-      height: "auto",
-      cursor: "pointer",
-      borderRadius: "4px",
-      transition: "transform 0.2s",
     },
   };
 
@@ -88,13 +82,32 @@ function ChooseCard({ onSelect, onClose, cardKey }) {
         <h2>Choose Card</h2>
         <div style={styles.imageGrid}>
           {allCardImages.map((image, index) => (
-            <img
-              key={index}
-              src={image}
-              alt={`card-${index}`}
-              style={styles.image}
-              onClick={() => onSelect(image, cardKey)}
-            />
+            <div className="relative" key={index}>
+              <img
+                key={index}
+                src={image}
+                alt={`card-${index}`}
+                style={{
+                  width: "100%",
+                  height: "auto",
+                  cursor: "pointer",
+                  borderRadius: "4px",
+                  transition: "transform 0.2s",
+                  filter: chosenCards.includes(image) && "brightness(0.5)",
+                }}
+                onClick={() => {
+                  if (chosenCards.includes(image)) {
+                    return;
+                  }
+                  onSelect(image, cardKey);
+                }}
+              />
+              {chosenCards.includes(image) && (
+                <div className="absolute top-0 left-0 h-full w-full text-white font-bold flex items-center justify-center">
+                  This card has already been selected
+                </div>
+              )}
+            </div>
           ))}
         </div>
       </div>

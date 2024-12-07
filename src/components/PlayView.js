@@ -79,6 +79,9 @@ export function PlayView({
         {" "}
         {river.map((image, index) => (
           <Card
+            removable={
+              index === 4 || (river[index] !== "" && river[index + 1] === "")
+            }
             disabled={index !== 0 && river[index - 1] === ""}
             key={"river-" + index}
             image={river[index] !== "" ? image : undefined}
@@ -105,6 +108,9 @@ export function PlayView({
       >
         {hole.map((image, index) => (
           <Card
+            removable={
+              index === 1 || (hole[index] !== "" && hole[index + 1] === "")
+            }
             disabled={index !== 0 && hole[index - 1] === ""}
             key={"hole" + index}
             image={image}
@@ -152,6 +158,7 @@ export function PlayView({
       </div>
       {isPopupVisible && (
         <ChooseCard
+          chosenCards={river.concat(hole)}
           cardKey={selectedCard}
           onSelect={chooseCardImage}
           onClose={() => {
