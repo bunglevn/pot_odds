@@ -1,14 +1,13 @@
 import React, { useState } from "react";
-import { Button } from "@mui/material";
+import { Button, Typography, useMediaQuery, useTheme } from "@mui/material";
 
 function Card({ image, onCardClick, onRemove, disabled, removable }) {
   const [isHovered, setIsHovered] = useState(false);
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   const cardStyle = {
     position: "relative",
-    width: "90px",
-    height: "130px",
-    minHeight: "130px",
     backgroundColor: "#808080",
     borderRadius: "5px",
     boxShadow: isHovered
@@ -26,6 +25,7 @@ function Card({ image, onCardClick, onRemove, disabled, removable }) {
 
   return (
     <div
+      className="w-[6vw] h-[9vw]"
       style={cardStyle}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => {
@@ -33,8 +33,9 @@ function Card({ image, onCardClick, onRemove, disabled, removable }) {
       }}
     >
       {isHovered && (
-        <Button
-          sx={{
+        <div
+          className="flex text-center items-center"
+          style={{
             color: disabled ? "rgb(253 186 116)" : "white",
             transition: "background-color 0.3s ease",
             fontWeight: "bold",
@@ -42,8 +43,8 @@ function Card({ image, onCardClick, onRemove, disabled, removable }) {
             height: "100%",
             width: "100%",
             textTransform: "none",
+            borderRadius: "5px",
           }}
-          size="medium"
           onClick={(e) => {
             if (removable && image) {
               e.stopPropagation();
@@ -54,11 +55,13 @@ function Card({ image, onCardClick, onRemove, disabled, removable }) {
             if (!disabled) onCardClick();
           }}
         >
-          {image && removable && "Click to remove"}
-          {disabled && "Please choose the previous card first"}
-          {!disabled && !image && "Click to add"}
-          {image && !removable && "Click to change"}
-        </Button>
+          <Typography sx={{ fontSize: isSmallScreen ? "6px" : "10px" }}>
+            {image && removable && "Click to remove"}
+            {disabled && "Please choose the previous card first"}
+            {!disabled && !image && "Click to add"}
+            {image && !removable && "Click to change"}
+          </Typography>
+        </div>
       )}
     </div>
   );

@@ -13,14 +13,7 @@ function ChooseCard({ onSelect, onClose, cardKey, chosenCards }) {
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
-    },
-    content: {
-      background: "white",
-      padding: "20px",
-      borderRadius: "8px",
-      position: "relative",
-      maxHeight: "80vh",
-      overflowY: "auto",
+      zIndex: 9999,
     },
     closeButton: {
       position: "absolute",
@@ -75,12 +68,17 @@ function ChooseCard({ onSelect, onClose, cardKey, chosenCards }) {
 
   return (
     <div style={styles.overlay} onClick={onClose}>
-      <div style={styles.content} onClick={(e) => e.stopPropagation()}>
+      <div
+        style={{ background: "white", borderRadius: "8px" }}
+        className="overflow-auto p-4 relative max-h-[80vh] lg:w-[40vw] w-[80%]"
+        onClick={(e) => e.stopPropagation()}
+      >
         <button style={styles.closeButton} onClick={onClose}>
           X
         </button>
-        <h2>Choose Card</h2>
-        <div style={styles.imageGrid}>
+        <Typography variant="h5"> Choose card </Typography>
+        <br />
+        <div className="grid grid-cols-4 gap-4">
           {allCardImages.map((image, index) => (
             <div className="relative" key={index}>
               <img

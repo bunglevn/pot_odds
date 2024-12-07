@@ -1,27 +1,12 @@
-import Paper from "@mui/material/Paper";
-import { styled } from "@mui/material/styles";
-import { Button, CardMedia, Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { CircularProgressCard } from "./CircularProgressCard";
 import { ActionAdviceCard } from "./ActionAdviceCard";
 import { useState } from "react";
 import { ExpectedValueCard } from "./ExpectedValueCard";
 import { ExplanationDialog } from "../explanation-dialog/explanation-dialog";
 import CheckIcon from "@mui/icons-material/Check";
-import Card from "@mui/material/Card";
 
-const Item = styled(Paper)(({ theme }) => ({
-  height: "97.5vh",
-  backgroundColor: "#900C27",
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: "center",
-  color: theme.palette.text.secondary,
-  ...theme.applyStyles("dark", {
-    backgroundColor: "#1A2027",
-  }),
-}));
-
-function SummaryTable({ data, nRiver, nHole }) {
+function SummaryTable({ data, nRiver, nHole, className }) {
   const isValidHand = nRiver >= 3 && nHole === 2;
   const { potOdds, equity, decision, expectedValue } = data;
   const [open, setOpen] = useState(false);
@@ -35,16 +20,19 @@ function SummaryTable({ data, nRiver, nHole }) {
   };
 
   return (
-    <Item sx={{ height: "100%", px: 2 }}>
+    <div className={className} style={{ background: "#900C27" }}>
       {isValidHand && (
-        <div className="justify-between flex flex-col gap-2">
-          <ActionAdviceCard title={"You should"} value={decision} />
-          <CircularProgressCard title={"Pot Odds"} value={potOdds} />
-          <CircularProgressCard title={"Equity"} value={equity.equity} />
-          <ExpectedValueCard expectedValue={expectedValue} />
+        <div className="flex flex-col gap-4 justify-between">
+          <div className="justify-between grid md:grid-cols-1 gap-2">
+            <ActionAdviceCard title={"You should"} value={decision} />
+            <CircularProgressCard title={"Pot Odds"} value={potOdds} />
+            <CircularProgressCard title={"Equity"} value={equity.equity} />
+            <ExpectedValueCard expectedValue={expectedValue} />
+          </div>
           <Button
             variant="contained"
             sx={{
+              width: "100%",
               borderRadius: 3, // Rounded corners
               backgroundColor: "#F6C667", // Custom background color
               boxShadow: 3, // Adding shadow for a 3D effect
@@ -84,7 +72,7 @@ function SummaryTable({ data, nRiver, nHole }) {
         data={data}
         numCard={nHole + nRiver}
       />
-    </Item>
+    </div>
   );
 }
 
