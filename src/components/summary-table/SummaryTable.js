@@ -22,8 +22,8 @@ function SummaryTable({ data, nRiver, nHole, className }) {
   return (
     <div className={className} style={{ background: "#900C27" }}>
       {isValidHand && (
-        <div className="flex flex-col gap-4 justify-between">
-          <div className="justify-between grid md:grid-cols-1 gap-2">
+        <div className="flex flex-col gap-2 justify-between h-full">
+          <div className="grid grid-cols-4 md:grid-cols-1 gap-2 h-full justify-between">
             <ActionAdviceCard title={"You should"} value={decision} />
             <CircularProgressCard title={"Pot Odds"} value={potOdds} />
             <CircularProgressCard title={"Equity"} value={equity.equity} />

@@ -8,7 +8,8 @@ export function hasTwoPairs(cards: string[]) {
     rankCounts[rank] = (rankCounts[rank] || 0) + 1;
   }
   const pairs = Object.values(rankCounts).filter((count) => count === 2);
-  return pairs.length >= 2;
+  console.log("2pairs", pairs);
+  return pairs.length >= 1;
 }
 
 export function hasConsecutive(sortedNumbers: number[], n: number) {
@@ -97,8 +98,12 @@ export function checkFullHouse(
   riverCards: string[],
   holeCards: string[],
   numberList: number[],
-  totalCards: number,
 ) {
+  console.log(
+    "checking fullhouse",
+    hasSameKind(riverCards, holeCards, numberList, 3),
+    hasTwoPairs(riverCards.concat(holeCards)),
+  );
   return (
     hasSameKind(riverCards, holeCards, numberList, 3) &&
     hasTwoPairs(riverCards.concat(holeCards))
@@ -143,7 +148,7 @@ export const combinationCheck = (
   //fixme: straighflust
   if (checkFourOfAKind(riverCards, holeCards, numberList))
     return { equity: 0.8, cases: [PokerHandType.FourOfAKind] };
-  if (checkFullHouse(riverCards, holeCards, numberList, totalCards))
+  if (checkFullHouse(riverCards, holeCards, numberList))
     return { equity: 0.7, cases: [PokerHandType.FullHouse] };
   if (checkFlush(riverCards, holeCards, suitList))
     return { equity: 0.6, cases: [PokerHandType.Flush] };

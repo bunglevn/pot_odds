@@ -41,19 +41,23 @@ export const EquityExplanation = ({ data, numCard }) => {
         <img src={rankingImage} className="w-[200px]" />
       </div>
 
-      <Typography>
-        The current number of cards on the river is {numCard - 2}, and the
-        strengths of your hand are:
-      </Typography>
+      {cases.length > 1 && (
+        <Typography>
+          The current number of cards on the river is {numCard - 2}, and the
+          strengths of your hand are:
+        </Typography>
+      )}
 
       {cases.map((c) => {
         const Component = componentMap[c];
         return Component ? (
           <>
-            <Typography fontWeight="bold" className="text-rose-500">
-              {" "}
-              {c} → Aiming for {aimingHandMap[c]?.join(", ")}
-            </Typography>
+            {c !== PokerHandType.HighHand && (
+              <Typography fontWeight="bold" className="text-rose-500">
+                {" "}
+                {c} → Aiming for {aimingHandMap[c]?.join(", ")}
+              </Typography>
+            )}
             <Component key={c} numCard={numCard} />
           </>
         ) : null;

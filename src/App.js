@@ -33,10 +33,10 @@ function App() {
     <>
       <div
         style={{ backgroundColor: "#000000" }}
-        className="md:grid md:grid-cols-12 md:h-[100vh]"
+        className="md:grid md:grid-cols-12 md:h-[100vh] max-h-[70vw]"
       >
         <PlayView
-          className="flex justify-center items-center md:col-span-10 max-h-[66.66667vw] md:h-[100vh]"
+          className="relative flex justify-center items-center md:col-span-10 md:h-full h-[200px] max-h-[70vw]"
           getPotOdds={(value) => setPotOdds(value)}
           getEquity={(value) => setEquity(value)}
           getDecision={(value) => setDecision(value)}
@@ -47,7 +47,7 @@ function App() {
           getNHole={(value) => setNHole(value)}
         />
         <SummaryTable
-          className="md:col-span-2 md:h-full px-2 text-center p-2 z-10"
+          className="max-h-[100vh] md:col-span-2 md:h-full px-2 text-center p-2 z-10"
           nRiver={nRiver}
           nHole={nHole}
           data={data}

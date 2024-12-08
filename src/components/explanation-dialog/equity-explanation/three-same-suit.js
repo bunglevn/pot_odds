@@ -2,7 +2,7 @@ import { StaticMathField } from "react-mathquill";
 
 export const ThreeSameSuit = () => {
   return (
-    <>
+    <div className="overflow-scroll">
       <StaticMathField>
         {`P(\\text{Flush}) = P(\\text{Both card 4 and 5 have the same suit})`}
       </StaticMathField>
@@ -17,6 +17,6 @@ export const ThreeSameSuit = () => {
       </StaticMathField>
       <StaticMathField>{`= \\frac{10}{47}\\frac{9}{46}`}</StaticMathField>
       <StaticMathField>{`= 0.04`}</StaticMathField>
-    </>
+    </div>
   );
 };

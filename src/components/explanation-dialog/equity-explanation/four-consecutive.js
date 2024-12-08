@@ -3,7 +3,7 @@ import { StaticMathField } from "react-mathquill";
 export const FourConsecutive = ({ numCard }) => {
   if (numCard === 6) {
     return (
-      <>
+      <div className="overflow-scroll">
         <StaticMathField>
           {`P(\\text{Straight}) = P(\\text{Card 5 is end of Straight}) + P(\\text{Card 5 is start of Straight})`}
         </StaticMathField>
@@ -13,7 +13,7 @@ export const FourConsecutive = ({ numCard }) => {
         <StaticMathField>{`= 2*\\frac{4}{52-6}`}</StaticMathField>
         <StaticMathField>{`= \\frac{8}{47}`}</StaticMathField>
         <StaticMathField>{`= 0.17`}</StaticMathField>
-      </>
+      </div>
     );
   }
   if (numCard === 5) {
