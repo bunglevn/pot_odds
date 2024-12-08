@@ -1,5 +1,7 @@
 import React from "react";
 import { Typography } from "@mui/material";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
 
 function ChooseCard({ onSelect, onClose, cardKey, chosenCards }) {
   const styles = {
@@ -81,10 +83,10 @@ function ChooseCard({ onSelect, onClose, cardKey, chosenCards }) {
         <div className="grid grid-cols-4 gap-4">
           {allCardImages.map((image, index) => (
             <div className="relative" key={index}>
-              <img
-                key={index}
+              <LazyLoadImage
                 src={image}
                 alt={`card-${index}`}
+                effect="opacity"
                 style={{
                   width: "100%",
                   height: "auto",
