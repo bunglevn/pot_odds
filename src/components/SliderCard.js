@@ -2,7 +2,7 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import { Slider, Input } from "@mui/material/";
 import Chip from "../images/chip.png";
-import { Typography } from "@mui/material";
+import { Typography, useMediaQuery, useTheme } from "@mui/material";
 
 function SliderCard({ title, sliderValue, handleSliderChange }) {
   const handleInputChange = (event) => {
@@ -18,35 +18,39 @@ function SliderCard({ title, sliderValue, handleSliderChange }) {
     }
   };
 
-  const windowStyle = {
-    width: "100%",
-    backgroundColor: "#eb2225",
-    borderRadius: "5px",
-    boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)",
-    padding: "10px",
-  };
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   const titleStyle = {
     color: "#fff",
-    marginBottom: "5px",
-    fontSize: "19px",
+    fontSize: isSmallScreen ? "6px" : "13px",
     textAlign: "center",
     fontFamily: '"Arial", sans-serif',
   };
 
   return (
-    <Box sx={windowStyle}>
-      <div style={titleStyle}>{title}</div>
+    <div
+      className="flex flex-col lg:w-[220px] md:w-[200px] md:h-[60px] h-[35px]"
+      style={{
+        backgroundColor: "#eb2225",
+        borderRadius: "5px",
+        boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)",
+        padding: "2px 8px",
+      }}
+    >
+      <span className="lg:text-sm text-[10px] mb-2" style={titleStyle}>
+        {title}
+      </span>
       <Slider
         value={sliderValue}
         onChange={handleSliderChange}
-        valueLabelDisplay="auto"
         max={10000}
         sx={{
           color: "#00bfa5",
+          marginBottom: !isSmallScreen ? "8px" : "6px",
           "& .MuiSlider-thumb": {
-            width: 25,
-            height: 25,
+            width: isSmallScreen ? 10 : 20,
+            height: isSmallScreen ? 10 : 20,
             backgroundImage: `url(${Chip})`,
             backgroundSize: "cover",
             backgroundRepeat: "no-repeat",
@@ -57,7 +61,10 @@ function SliderCard({ title, sliderValue, handleSliderChange }) {
         aria-labelledby={`${title}-slider`}
       />
       <div style={titleStyle} className="w-full text-x flex flex-row">
-        <Typography> Value: </Typography>
+        <Typography sx={{ fontSize: isSmallScreen ? "6px" : "10px" }}>
+          {" "}
+          Value:{" "}
+        </Typography>
         <Input
           value={sliderValue}
           size="small"
@@ -66,6 +73,7 @@ function SliderCard({ title, sliderValue, handleSliderChange }) {
           sx={{
             color: "#fff",
             width: "70%",
+            fontSize: isSmallScreen ? "6px" : "10px",
           }}
           inputProps={{
             step: 5,
@@ -76,7 +84,7 @@ function SliderCard({ title, sliderValue, handleSliderChange }) {
           }}
         />
       </div>
-    </Box>
+    </div>
   );
 }
 

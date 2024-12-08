@@ -1,6 +1,7 @@
 import React from "react";
+import { Typography } from "@mui/material";
 
-function ChooseCard({ onSelect, onClose, cardKey }) {
+function ChooseCard({ onSelect, onClose, cardKey, chosenCards }) {
   const styles = {
     overlay: {
       position: "fixed",
@@ -12,14 +13,7 @@ function ChooseCard({ onSelect, onClose, cardKey }) {
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
-    },
-    content: {
-      background: "white",
-      padding: "20px",
-      borderRadius: "8px",
-      position: "relative",
-      maxHeight: "80vh",
-      overflowY: "auto",
+      zIndex: 9999,
     },
     closeButton: {
       position: "absolute",
@@ -35,13 +29,6 @@ function ChooseCard({ onSelect, onClose, cardKey }) {
       gridTemplateColumns: "repeat(auto-fill, minmax(100px, 1fr))",
       gap: "10px",
       marginTop: "20px",
-    },
-    image: {
-      width: "100%",
-      height: "auto",
-      cursor: "pointer",
-      borderRadius: "4px",
-      transition: "transform 0.2s",
     },
   };
 
@@ -81,20 +68,44 @@ function ChooseCard({ onSelect, onClose, cardKey }) {
 
   return (
     <div style={styles.overlay} onClick={onClose}>
-      <div style={styles.content} onClick={(e) => e.stopPropagation()}>
+      <div
+        style={{ background: "white", borderRadius: "8px" }}
+        className="overflow-auto p-4 relative max-h-[80vh] lg:w-[40vw] w-[80%]"
+        onClick={(e) => e.stopPropagation()}
+      >
         <button style={styles.closeButton} onClick={onClose}>
           X
         </button>
-        <h2>Choose Card</h2>
-        <div style={styles.imageGrid}>
+        <Typography variant="h5"> Choose card </Typography>
+        <br />
+        <div className="grid grid-cols-4 gap-4">
           {allCardImages.map((image, index) => (
-            <img
-              key={index}
-              src={image}
-              alt={`card-${index}`}
-              style={styles.image}
-              onClick={() => onSelect(image, cardKey)}
-            />
+            <div className="relative" key={index}>
+              <img
+                key={index}
+                src={image}
+                alt={`card-${index}`}
+                style={{
+                  width: "100%",
+                  height: "auto",
+                  cursor: "pointer",
+                  borderRadius: "4px",
+                  transition: "transform 0.2s",
+                  filter: chosenCards.includes(image) && "brightness(0.5)",
+                }}
+                onClick={() => {
+                  if (chosenCards.includes(image)) {
+                    return;
+                  }
+                  onSelect(image, cardKey);
+                }}
+              />
+              {chosenCards.includes(image) && (
+                <div className="absolute top-0 left-0 h-full w-full text-white font-bold flex items-center justify-center">
+                  This card has already been selected
+                </div>
+              )}
+            </div>
           ))}
         </div>
       </div>
