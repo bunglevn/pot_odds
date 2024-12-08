@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/pot_odds/static/css/main.e5dd11fa.css",
-    "main.js": "/pot_odds/static/js/main.6a7f9c78.js",
+    "main.css": "/pot_odds/static/css/main.9e7719e0.css",
+    "main.js": "/pot_odds/static/js/main.86bd9cf7.js",
     "static/js/453.0048375e.chunk.js": "/pot_odds/static/js/453.0048375e.chunk.js",
     "static/media/pokertabledog.png": "/pot_odds/static/media/pokertabledog.ff1bdd6b722ac5158569.png",
     "static/media/queen_of_clubs2.png": "/pot_odds/static/media/queen_of_clubs2.ef480115313c1c393699.png",
@@ -61,12 +61,12 @@
     "static/media/2_of_diamonds.png": "/pot_odds/static/media/2_of_diamonds.a51b192d2f2ba1fc1d53.png",
     "static/media/chip.png": "/pot_odds/static/media/chip.f7fc8b4cc47d7fa9b858.png",
     "index.html": "/pot_odds/index.html",
-    "main.e5dd11fa.css.map": "/pot_odds/static/css/main.e5dd11fa.css.map",
-    "main.6a7f9c78.js.map": "/pot_odds/static/js/main.6a7f9c78.js.map",
+    "main.9e7719e0.css.map": "/pot_odds/static/css/main.9e7719e0.css.map",
+    "main.86bd9cf7.js.map": "/pot_odds/static/js/main.86bd9cf7.js.map",
     "453.0048375e.chunk.js.map": "/pot_odds/static/js/453.0048375e.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.e5dd11fa.css",
-    "static/js/main.6a7f9c78.js"
+    "static/css/main.9e7719e0.css",
+    "static/js/main.86bd9cf7.js"
   ]
 }
