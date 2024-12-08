@@ -3,13 +3,13 @@ import { StaticMathField } from "react-mathquill";
 export const TwoPairs = ({ numCard }) => {
   if (numCard === 6)
     return (
-      <>
+      <div className="overflow-scroll">
         <StaticMathField>
           {`P(\\text{Full house}) = P(\\text{Card 5 has the same rank with either pair})`}
         </StaticMathField>
         <StaticMathField>{`= 2*\\frac{4-2}{52-6}`}</StaticMathField>
         <StaticMathField>{`= 0.08`}</StaticMathField>
-      </>
+      </div>
     );
 
   if (numCard === 5)

@@ -1,14 +1,9 @@
 import Card from "@mui/material/Card";
-import Stack from "@mui/material/Stack";
-import { Typography, useMediaQuery, useTheme } from "@mui/material";
-import Box from "@mui/material/Box";
-import CircularProgress from "@mui/material/CircularProgress";
-import CardContent from "@mui/material/CardContent";
+import { useTheme } from "@mui/material";
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
 
-export function CircularProgressCard({ title, value }) {
-  const theme = useTheme();
-  const isMdScreen = useMediaQuery(theme.breakpoints.down("md"));
-
+export function CircularProgressCard({ title, value, className }) {
   if (value === 100) {
     value = 100;
   } else {
@@ -16,51 +11,29 @@ export function CircularProgressCard({ title, value }) {
   }
   return (
     <Card
+      className={className}
       sx={{
-        padding: 0,
+        paddingY: 1,
         borderRadius: 3,
         boxShadow: 3,
       }}
     >
-      <div className="items-center">
-        <Typography
-          variant="subtitle1"
-          fontWeight="bold"
-          fontSize={isMdScreen ? 10 : 15}
-        >
-          {title}
-        </Typography>
-        <Box sx={{ position: "relative", display: "inline-flex" }}>
-          <CircularProgress
-            variant="determinate"
+      <div className="flex flex-col justify-center h-full items-center font-bold flex flex-col gap-1 text-[10px] md:text-xs lg:text-xl">
+        <span>{title}</span>
+        <div className="md:w-1/3 w-1/2 lg:w-8/12 xl:w-1/2 aspect-square">
+          <CircularProgressbar
+            styles={buildStyles({
+              pathColor: "#1d7243", // Bar color
+              trailColor: "#d6d6d6", // Background/trail color
+              textColor: "#1d7243", // Text color
+
+              strokeLinecap: "round", // Makes the ends of the bar rounded
+              textSize: "16px", // Adjust the text size
+            })}
             value={value}
-            size={isMdScreen ? 35 : 55}
-            thickness={5}
-            sx={{ color: "#1d7243" }}
+            text={value + "%"}
           />
-          <Box
-            sx={{
-              top: 0,
-              left: 0,
-              bottom: 0,
-              right: 0,
-              position: "absolute",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Typography
-              variant="caption"
-              component="div"
-              sx={{ color: "text.secondary" }}
-              fontWeight="bold"
-              fontSize={isMdScreen ? 10 : 15}
-            >
-              {value}%
-            </Typography>
-          </Box>
-        </Box>
+        </div>
       </div>
     </Card>
   );

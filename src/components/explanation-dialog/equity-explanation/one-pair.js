@@ -4,7 +4,7 @@ import { Typography } from "@mui/material";
 export const OnePair = ({ numCard }) => {
   if (numCard === 5)
     return (
-      <>
+      <div className="overflow-scroll">
         <StaticMathField>
           {`P(\\text{Three of kind}) = P(\\text{Card 4 has the same kind})*P(\\text{Card 5 has different kinds}) + P(\\text{Card 4 has different kinds})*P(\\text{Card 5 has the same kind})`}
         </StaticMathField>
@@ -28,7 +28,7 @@ export const OnePair = ({ numCard }) => {
           {`= 3*\\frac{2}{52-5}*\\frac{1}{52-5-1}`}
         </StaticMathField>
         <StaticMathField>{`= 0.002`}</StaticMathField>
-      </>
+      </div>
     );
 
   if (numCard === 6)

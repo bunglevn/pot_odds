@@ -12,9 +12,10 @@ export const FourSameSuitExplanation = ({ numCard }) => {
 
   if (numCard === 5)
     return (
-      <>
+      <div className="overflow-scroll">
+        <StaticMathField>{`P(Flush)`}</StaticMathField>
         <StaticMathField>
-          {`P(Flush) = P(\\text{Card 4 has the same suit}) + P(\\text{Card 4 has a different suit})P(\\text{Card 5 has the same suit})`}
+          {`= P(\\text{Card 4 has the same suit}) + P(\\text{Card 4 has a different suit})P(\\text{Card 5 has the same suit})`}
         </StaticMathField>
         <StaticMathField>
           {`= \\frac{\\text{Number of cards left with the same suit}}{\\text{Number of cards left}} + \\frac{\\text{Number of cards left with different suits}}{\\text{Number of cards left}}\\frac{\\text{Number of cards left with the same suit}}{\\text{Number of cards left} - 1}`}
@@ -26,6 +27,6 @@ export const FourSameSuitExplanation = ({ numCard }) => {
           {`= \\frac{9}{47} + \\frac{38}{47}\\frac{9}{46}`}
         </StaticMathField>
         <StaticMathField>{`= 0.35`}</StaticMathField>
-      </>
+      </div>
     );
 };

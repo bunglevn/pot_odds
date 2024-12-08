@@ -118,8 +118,8 @@ export function calculateEquity({
   }
   // Number 3: already have 3 of a kind
   if (
-    hasSameKind(riverCards, holeCards, sortedNumbers, 3) &&
-    !hasTwoPairs(riverCards.concat(holeCards))
+    hasSameKind(riverCards, holeCards, sortedNumbers, 3)
+    // && !hasTwoPairs(riverCards.concat(holeCards))
   ) {
     cases.push(PotentialHandType.ThreeOfAKind);
     if (n === 6) {

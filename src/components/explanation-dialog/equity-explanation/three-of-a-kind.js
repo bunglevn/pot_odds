@@ -3,7 +3,7 @@ import { StaticMathField } from "react-mathquill";
 export const ThreeOfAKind = ({ numCard }) => {
   if (numCard === 6)
     return (
-      <>
+      <div className="overflow-scroll">
         <StaticMathField>
           {`P(\\text{Four of a kind}) = P(\\text{Card 5 has the same kind with the 3 others})`}
         </StaticMathField>
@@ -21,7 +21,7 @@ export const ThreeOfAKind = ({ numCard }) => {
         </StaticMathField>
         <StaticMathField>{`= 3*\\frac{3}{52-6}`}</StaticMathField>
         <StaticMathField>{`= 0.191`}</StaticMathField>
-      </>
+      </div>
     );
 
   if (numCard === 5)

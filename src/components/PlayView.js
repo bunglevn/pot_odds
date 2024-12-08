@@ -4,7 +4,7 @@ import ChooseCard from "./ChooseCard";
 import SliderCard from "./SliderCard";
 import { useEffect, useState } from "react";
 import my_avatar from "../images/avatar/you.jpg";
-import { Avatar, useMediaQuery, useTheme } from "@mui/material";
+import { useTheme } from "@mui/material";
 import { calculateEquity } from "../logic/equity.ts";
 import { calculatePotOdds, shouldCall } from "../logic/pot-odds.ts";
 import { calculateExpectedValue } from "../logic/expected-value.ts";
@@ -27,8 +27,6 @@ export function PlayView({
   const [river, setRiver] = useState(["", "", "", "", ""]);
   const [hole, setHole] = useState(["", ""]);
   const [selectedCard, setSelectedCard] = useState("");
-  const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   useEffect(() => {
     const nRiver = river.filter(validCardNumberAndSuit).length;
@@ -70,63 +68,66 @@ export function PlayView({
 
   return (
     <div className={className + " PlayView"}>
-      <div className="flex flex-col sm:gap-1 space-y-2 h-full lg:mt-44 md:mt-28 items-center">
-        <div className="grid grid-cols-3 md:grid-cols-2 gap-4">
-          <SliderCard
-            title={"Total Pot"}
-            sliderValue={potValue}
-            handleSliderChange={(event, value) => setPotValue(value)}
+      <div className="absolute top-[24%] grid grid-cols-2 gap-4 w-5/12 md:w-6/12">
+        <SliderCard
+          title={"Total Pot"}
+          sliderValue={potValue}
+          handleSliderChange={(event, value) => setPotValue(value)}
+        />
+        <SliderCard
+          title={"Opponent's Call"}
+          sliderValue={opponentCall}
+          handleSliderChange={(event, value) => setOpponentCall(value)}
+        />
+      </div>
+      <div className="grid grid-cols-5 place-items-center w-7/12 items-center absolute xl:top-[38%] top-[40%] flex-row gap-2 h-[40px] md:h-[10vw]">
+        {river.map((image, index) => (
+          <Card
+            className="w-[30px] max-w-[100px] h-full md:w-[7vw]"
+            removable={
+              index === 4 || (river[index] !== "" && river[index + 1] === "")
+            }
+            disabled={index !== 0 && river[index - 1] === ""}
+            key={"river-" + index}
+            image={river[index] !== "" ? image : undefined}
+            onCardClick={() => {
+              setIsPopupVisible(true);
+              setSelectedCard("river-" + index);
+            }}
+            onRemove={() => {
+              setRiver((prevImages) => removeImage(prevImages, index));
+            }}
           />
-          {isSmallScreen && <div></div>}
-          <SliderCard
-            title={"Opponent's Call"}
-            sliderValue={opponentCall}
-            handleSliderChange={(event, value) => setOpponentCall(value)}
+        ))}
+      </div>
+      <div className="grid grid-cols-2 place-items-center w-1/4 items-center absolute md:top-[64%] xl:top-[61%] top-[62%] flex-row h-[40px] md:h-[10vw]">
+        {hole.map((image, index) => (
+          <Card
+            className="h-full w-[30px] md:w-[7vw]"
+            removable={
+              index === 1 || (hole[index] !== "" && hole[index + 1] === "")
+            }
+            disabled={index !== 0 && hole[index - 1] === ""}
+            key={"hole" + index}
+            image={image}
+            onCardClick={() => {
+              setIsPopupVisible(true);
+              setSelectedCard("hole-" + index);
+            }}
+            onRemove={() => {
+              setHole((prevImages) => removeImage(prevImages, index));
+            }}
           />
-        </div>
-        <div className="flex items-center flex-row gap-2">
-          {river.map((image, index) => (
-            <Card
-              removable={
-                index === 4 || (river[index] !== "" && river[index + 1] === "")
-              }
-              disabled={index !== 0 && river[index - 1] === ""}
-              key={"river-" + index}
-              image={river[index] !== "" ? image : undefined}
-              onCardClick={() => {
-                setIsPopupVisible(true);
-                setSelectedCard("river-" + index);
-              }}
-              onRemove={() => {
-                setRiver((prevImages) => removeImage(prevImages, index));
-              }}
-            />
-          ))}
-        </div>
-        <div className="flex items-center flex-row gap-2">
-          {hole.map((image, index) => (
-            <Card
-              removable={
-                index === 1 || (hole[index] !== "" && hole[index + 1] === "")
-              }
-              disabled={index !== 0 && hole[index - 1] === ""}
-              key={"hole" + index}
-              image={image}
-              onCardClick={() => {
-                setIsPopupVisible(true);
-                setSelectedCard("hole-" + index);
-              }}
-              onRemove={() => {
-                setHole((prevImages) => removeImage(prevImages, index));
-              }}
-            />
-          ))}
-        </div>
-
-        <Avatar
-          alt="You"
+        ))}
+      </div>
+      <div
+        className="absolute bottom-0.5 w-8 h-8 sm:w-8 sm:h-8 md:w-16 md:h-16 lg:w-32 lg:h-32"
+        style={{ borderRadius: "50%", background: "none" }}
+      >
+        <img
+          className="w-full h-full"
           src={my_avatar}
-          sx={{ width: "6vw", height: "6vw" }}
+          style={{ borderRadius: "50%" }}
         />
       </div>
 

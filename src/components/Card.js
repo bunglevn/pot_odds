@@ -1,10 +1,14 @@
 import React, { useState } from "react";
-import { Button, Typography, useMediaQuery, useTheme } from "@mui/material";
 
-function Card({ image, onCardClick, onRemove, disabled, removable }) {
+function Card({
+  image,
+  onCardClick,
+  onRemove,
+  disabled,
+  removable,
+  className,
+}) {
   const [isHovered, setIsHovered] = useState(false);
-  const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   const cardStyle = {
     position: "relative",
@@ -25,7 +29,7 @@ function Card({ image, onCardClick, onRemove, disabled, removable }) {
 
   return (
     <div
-      className="w-[6vw] h-[9vw]"
+      className={className}
       style={cardStyle}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => {
@@ -55,12 +59,12 @@ function Card({ image, onCardClick, onRemove, disabled, removable }) {
             if (!disabled) onCardClick();
           }}
         >
-          <Typography sx={{ fontSize: isSmallScreen ? "6px" : "10px" }}>
+          <span className="text-[4px] md:text-xs xl:text-base font-normal">
             {image && removable && "Click to remove"}
             {disabled && "Please choose the previous card first"}
             {!disabled && !image && "Click to add"}
             {image && !removable && "Click to change"}
-          </Typography>
+          </span>
         </div>
       )}
     </div>

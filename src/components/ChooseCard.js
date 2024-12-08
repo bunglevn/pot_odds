@@ -70,7 +70,7 @@ function ChooseCard({ onSelect, onClose, cardKey, chosenCards }) {
     <div style={styles.overlay} onClick={onClose}>
       <div
         style={{ background: "white", borderRadius: "8px" }}
-        className="overflow-auto p-4 relative max-h-[80vh] lg:w-[40vw] w-[80%]"
+        className="overflow-auto p-4 relative max-h-[90vh] w-[80%] lg:w-[40vw] md:w-[40%]"
         onClick={(e) => e.stopPropagation()}
       >
         <button style={styles.closeButton} onClick={onClose}>
@@ -101,9 +101,9 @@ function ChooseCard({ onSelect, onClose, cardKey, chosenCards }) {
                 }}
               />
               {chosenCards.includes(image) && (
-                <div className="absolute top-0 left-0 h-full w-full text-white font-bold flex items-center justify-center">
+                <span className="text-[6px] md:text-xs xl:text-base absolute top-0 left-0 h-full w-full text-white font-bold flex items-center justify-center">
                   This card has already been selected
-                </div>
+                </span>
               )}
             </div>
           ))}
